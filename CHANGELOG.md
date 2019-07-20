@@ -3,7 +3,8 @@
 
 <!-- ### Bug Fixes -->
 
-<!-- ### build -->
+### build
+- **core**: initial project configuration.
 
 <!-- ### Dependency updates -->
 
