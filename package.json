@@ -1,5 +1,5 @@
 {
-  "name": "project-su",
+  "name": "landing-su",
   "jest": {
     "verbose": true,
     "collectCoverage": true,
@@ -19,7 +19,7 @@
   "jest-junit": {
     "output": "./test-results/junit/jest-junit.xml"
   },
-  "version": "0.1.0-beta.0",
+  "version": "0.1.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve --aot=true",
@@ -60,6 +60,7 @@
     "@nebular/eva-icons": "^4.1.2",
     "@nebular/theme": "^4.1.2",
     "eva-icons": "^1.1.1",
+    "lodash": "^4.17.15",
     "rxjs": "^6.5.2",
     "tslib": "^1.10.0",
     "zone.js": "~0.9.1"
