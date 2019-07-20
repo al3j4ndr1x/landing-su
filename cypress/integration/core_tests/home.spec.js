@@ -14,7 +14,7 @@ describe('Project SU', () => {
 
   it('has a heading', () => {
     cy.get('h6')
-      .should('contain', 'Welcome to The Project SU!'); // Assert that contain a title
+      .should('contain', 'Welcome to The Landing SU!'); // Assert that contain a title
   });
 
   it('has a input type email', () => {

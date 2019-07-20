@@ -1,5 +1,5 @@
-[![CircleCI](https://circleci.com/gh/al3j4ndr1x/project-su/tree/master.svg?style=svg)](https://circleci.com/gh/al3j4ndr1x/project-su/tree/master)
-[![Coverage Status](https://coveralls.io/repos/github/al3j4ndr1x/project-su/badge.svg?branch=master)](https://coveralls.io/github/al3j4ndr1x/project-su?branch=master)
+[![CircleCI](https://circleci.com/gh/al3j4ndr1x/landing-su/tree/master.svg?style=svg)](https://circleci.com/gh/al3j4ndr1x/landing-su/tree/master)
+[![Coverage Status](https://coveralls.io/repos/github/al3j4ndr1x/landing-su/badge.svg?branch=master)](https://coveralls.io/github/al3j4ndr1x/landing-su?branch=master)
 # Landing SU
 
 This is the landing page with Angular 8, TDD, and CI/CD.
