@@ -111,8 +111,9 @@ jobs: # a collection of steps
           at: /home/circleci
       - run:
           name: Deploy Master to Firebase
-          command: echo 'Hi Deployment'
-          #command: ./node_modules/.bin/firebase deploy --token=$FIREBASE_DEPLOY_TOKEN
+          command: echo 'Starting Deployment'
+          command: ./node_modules/.bin/firebase deploy --token=$FIREBASE_DEPLOY_TOKEN
+          command: echo 'Finished Deployment'
 
 # Orchestrate or schedule a set of jobs, see https://circleci.com/docs/2.0/workflows/
 workflows:
@@ -122,8 +123,17 @@ workflows:
       - build:
           filters:
             branches:
-              ignore:
+              only:
+                - master
+                - develop
+                - /release-.*/
                 - /feature-.*/
+                - /issue-.*/
+                - /bugfix-.*/
+                - /hotfix-.*/
+                - /docs-.*/
+                - /experiment-.*/
+
       - test:
           requires:
             - build
