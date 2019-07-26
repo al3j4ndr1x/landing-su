@@ -30,6 +30,8 @@ speed-measure-plugin.json
 !.vscode/launch.json
 !.vscode/extensions.json
 .history/*
+/.vscode
+
 
 # misc
 /.sass-cache
@@ -69,3 +71,21 @@ junit.xml
 /reports
 /test-results
 ./test-results
+
+# Firebase
+.firebaserc
+/.firebase
+firebase-debug.log
+firestore.rules
+firestore.indexes.json
+**/.firebaserc
+
+### Firebase Patch ###
+.runtimeconfig.json
+.firebase/
+
+# Environments
+.env
+/src/environments/env.ts
+dotenv.config.js
+dotenv.example.js

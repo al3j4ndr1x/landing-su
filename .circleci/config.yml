@@ -27,16 +27,24 @@ jobs: # a collection of steps
           name: Updating npm at latest
           command: 'sudo npm install -g npm@latest'
 
+      - run:
+          name: Loading environment variables
+          command: ./deploy_config.sh
+
       - restore_cache: # special step to restore the dependency cache
           # Read about caching dependencies: https://circleci.com/docs/2.0/caching/
           keys:
-            - v2-node-dependencies-{{ .Branch }}-{{ checksum "package-lock.json" }}
-            - v2-node-dependencies-{{ .Branch }}
-            - v2-node-dependencies-
+            - v3-node-dependencies-{{ .Branch }}-{{ checksum "package-lock.json" }}
+            - v3-node-dependencies-{{ .Branch }}
+            - v3-node-dependencies-
 
       - run:
           name: Installing Dependencies
           command: npm ci
+
+      - run:
+          name: Installing Google Cloud Functions Dependencies
+          command: cd functions && npm ci
 
       - run:
           name: Verifying Cypress
@@ -46,9 +54,13 @@ jobs: # a collection of steps
           # cache NPM modules and the folder with the Cypress binary
           paths:
             - node_modules
+            - functions/node_modules
             - ~/.npm
             - ~/.cache
-          key: v2-node-dependencies-{{ .Branch }}-{{ checksum "package-lock.json" }}
+            - package.json
+            - firebase.json
+            #- .firebaserc
+          key: v3-node-dependencies-{{ .Branch }}-{{ checksum "package-lock.json" }}
 
       - persist_to_workspace:
           root: /home/circleci
@@ -109,11 +121,17 @@ jobs: # a collection of steps
     steps:
       - attach_workspace:
           at: /home/circleci
+
       - run:
-          name: Deploy Master to Firebase
-          command: echo 'Starting Deployment'
-          command: ./node_modules/.bin/firebase deploy --token=$FIREBASE_DEPLOY_TOKEN
-          command: echo 'Finished Deployment'
+          name: Building Master to production
+          command: npm run build:prod
+
+      - run:
+          name: Deploying Master to Firebase
+          command: |
+            ./node_modules/.bin/firebase deploy -m "Initial deployment by CircleCI." \
+            --project $FIREBASE_PROJECT_ALIAS \
+            --token=$FIREBASE_DEPLOY_TOKEN
 
 # Orchestrate or schedule a set of jobs, see https://circleci.com/docs/2.0/workflows/
 workflows:
