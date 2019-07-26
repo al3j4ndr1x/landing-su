@@ -157,23 +157,31 @@ git log --graph --oneline --decorate
 
 #### Finally, remove the temporary branch:
 
-```bash
+```shell
 git branch --delete hotfix-1.2.1
 ```
 
 ## git extras
 
+### Tracking Branches
+If you already have a local branch and want to set it to a remote branch you just pulled down, or want to change the upstream branch you're tracking, you can use the `-u` or `--set-upstream-to` option to `git branch` to explicitly set it at any time.
+```shell
+git branch -u origin/develop
+
+Branch develop set up to track remote branch develop from origin.
+```
+
 ### Reset local repository branch to be just like remote repository HEAD
 
 If you want to save your current branch's state before doing this (just in case), you can do:
-```bash
+```shell
 git commit -a -m "Saving my work, just in case"
 git branch my-saved-work
 ```
 Now your work is saved on the branch "my-saved-work" in case you decide you want it back (or want to look at it later or diff it against your updated branch).
 
 Setting your branch to exactly match the remote branch can be done in two steps:
-```bash
+```shell
 git fetch origin
 git reset --hard origin/master
 ```
