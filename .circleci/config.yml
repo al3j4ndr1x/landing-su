@@ -29,7 +29,7 @@ jobs: # a collection of steps
 
       - run:
           name: Loading environment variables
-          command: ./deploy_config.sh
+          command: bash ./deploy_config.sh
 
       - restore_cache: # special step to restore the dependency cache
           # Read about caching dependencies: https://circleci.com/docs/2.0/caching/
@@ -122,6 +122,9 @@ jobs: # a collection of steps
       - attach_workspace:
           at: /home/circleci
 
+      - run:
+          name: Show current branch
+          command: echo ${CIRCLE_BRANCH}
       - run:
           name: Building Master to production
           command: npm run build:prod
