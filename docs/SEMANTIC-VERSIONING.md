@@ -9,6 +9,13 @@ Given a version number MAJOR.MINOR.PATCH, increment the:
 
 Additional labels for pre-release and build metadata are available as extensions to the MAJOR.MINOR.PATCH format.
 
+## Preview releases
+We let you preview what's coming by providing Beta releases and Release Candidates (rc) for each major and minor release:
+
+- **Beta**: A release that is under active development and testing. A Beta release is indicated by a release tag appended with the beta identifier, such as 8.0.0-beta.0.
+
+- **Release candidate**: A release that is feature complete and in final testing. A release candidate is indicated by a release tag appended with the rc identifier, such as version 8.1.0-rc.
+
 ## Strict Semantic Versioning Validation
 The regular expression below is used to validate release version and may be for branch name (e.g: 2.5.x) too.
 

@@ -61,4 +61,5 @@ describe('AppComponent', () => {
     const compiled = fixture.debugElement.nativeElement;
     expect(compiled.querySelector('button').textContent).toContain('Get early access');
   });
+
 });
