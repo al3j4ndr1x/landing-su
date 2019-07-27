@@ -34,9 +34,9 @@ jobs: # a collection of steps
       - restore_cache: # special step to restore the dependency cache
           # Read about caching dependencies: https://circleci.com/docs/2.0/caching/
           keys:
-            - v3-node-dependencies-{{ .Branch }}-{{ checksum "package-lock.json" }}
-            - v3-node-dependencies-{{ .Branch }}
-            - v3-node-dependencies-
+            - v3.1-node-dependencies-{{ .Branch }}-{{ checksum "package-lock.json" }}
+            - v3.1-node-dependencies-{{ .Branch }}
+            - v3.1-node-dependencies-
 
       - run:
           name: Installing Dependencies
@@ -60,7 +60,7 @@ jobs: # a collection of steps
             - package.json
             - firebase.json
             #- .firebaserc
-          key: v3-node-dependencies-{{ .Branch }}-{{ checksum "package-lock.json" }}
+          key: v3.1-node-dependencies-{{ .Branch }}-{{ checksum "package-lock.json" }}
 
       - persist_to_workspace:
           root: /home/circleci
