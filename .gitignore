@@ -76,8 +76,9 @@ junit.xml
 .firebaserc
 /.firebase
 firebase-debug.log
-firestore.rules
-firestore.indexes.json
+firestore-debug.log
+#firestore.rules
+#firestore.indexes.json
 **/.firebaserc
 
 ### Firebase Patch ###
