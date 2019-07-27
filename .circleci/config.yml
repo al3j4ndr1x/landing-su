@@ -60,6 +60,8 @@ jobs: # a collection of steps
             - package.json
             - firebase.json
             #- .firebaserc
+            - firestore.rules
+            - firestore.indexes.json
           key: v3.1-node-dependencies-{{ .Branch }}-{{ checksum "package-lock.json" }}
 
       - persist_to_workspace:
