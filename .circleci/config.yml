@@ -231,7 +231,7 @@ workflows:
                 - /release-.*/
       - deploy_production:
           requires:
-            - test_e2e
+            - test #_e2e
           filters:  # using regex filters requires the entire branch to match
             branches:
               only:  # only branches matching the below regex filters will run
