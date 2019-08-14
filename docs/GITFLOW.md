@@ -11,11 +11,6 @@ The central repository holds two main branches with an infinite lifetime:
 
 Each time when changes are merged back into `master`, this is a new production release _by definition_.
 
-## Release branches
-
-* `release`
-* `hotfix`
-
 ## Feature branches
 
 Feature branches (or sometimes called **topic** branches) are used to develop new features for the upcoming or a distant future release. 
@@ -24,7 +19,7 @@ The different types of branches we may use are:
 
 * `feature`
 * `issue`
-* `bugfix`
+* `bug`
 * `experiment`
 * `docs`
 

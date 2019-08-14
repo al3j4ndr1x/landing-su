@@ -3,13 +3,5 @@ service cloud.firestore {
     match /{document=**} {
       allow read, write: if false; // Deny read/write access to all users under any conditions
     }
-    match /users/{userId} {
-      allow read, write: if isOwner(userId);
-    }
-
-    // Reusable function to determine document ownership
-    function isOwner(userId) {
-      return request.auth.uid == userId
-    }
   }
 }

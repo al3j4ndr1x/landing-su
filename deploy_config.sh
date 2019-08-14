@@ -22,9 +22,5 @@ sed -i 's/\(FIREBASE_PROJECT_ID\)/'$FIREBASE_PROJECT_ID'/' environment.prod.ts
 sed -i 's/\(FIREBASE_STORAGE_BUCKET\)/'$FIREBASE_STORAGE_BUCKET'/' environment.prod.ts
 sed -i 's/\(FIREBASE_MESSAGING_SENDER_ID\)/'$FIREBASE_MESSAGING_SENDER_ID'/' environment.prod.ts
 sed -i 's/\(FIREBASE_APP_ID\)/'$FIREBASE_APP_ID'/' environment.prod.ts
-sed -i 's/\(FIREBASE_STAGING_API_KEY\)/'$FIREBASE_STAGING_API_KEY'/' environment.staging.ts
-sed -i 's/\(FIREBASE_STAGING_PROJECT_ID\)/'$FIREBASE_STAGING_PROJECT_ID'/' environment.staging.ts
-sed -i 's/\(FIREBASE_STAGING_MESSAGING_SENDER_ID\)/'$FIREBASE_STAGING_MESSAGING_SENDER_ID'/' environment.staging.ts
-sed -i 's/\(FIREBASE_STAGING_APP_ID\)/'$FIREBASE_STAGING_APP_ID'/' environment.staging.ts
 
 echo 'Updated Environment Variables'
