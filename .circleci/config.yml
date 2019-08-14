@@ -34,9 +34,9 @@ jobs: # a collection of steps
       - restore_cache: # special step to restore the dependency cache
           # Read about caching dependencies: https://circleci.com/docs/2.0/caching/
           keys:
-            - v3.1-node-dependencies-{{ .Branch }}-{{ checksum "package-lock.json" }}
-            - v3.1-node-dependencies-{{ .Branch }}
-            - v3.1-node-dependencies-
+            - v3.2-node-dependencies-{{ .Branch }}-{{ checksum "package-lock.json" }}
+            - v3.2-node-dependencies-{{ .Branch }}
+            - v3.2-node-dependencies-
 
       - run:
           name: Installing Dependencies
@@ -57,12 +57,13 @@ jobs: # a collection of steps
             - functions/node_modules
             - ~/.npm
             - ~/.cache
+            - package-lock.json
             - package.json
             - firebase.json
             #- .firebaserc
             - firestore.rules
             - firestore.indexes.json
-          key: v3.1-node-dependencies-{{ .Branch }}-{{ checksum "package-lock.json" }}
+          key: v3.2-node-dependencies-{{ .Branch }}-{{ checksum "package-lock.json" }}
 
       - persist_to_workspace:
           root: /home/circleci
@@ -94,31 +95,71 @@ jobs: # a collection of steps
           destination: coverage
 
       - run:
-          name: Running end-to-end Tests and recording with Cypress
+          name: Finally the working directory after test steps
+          command: |
+            ls -al
+            echo '^^^That should look familiar^^^'
+
+  test_e2e:
+    executor: default
+    steps:
+      - attach_workspace:
+          at: /home/circleci
+      - run:
+          name: Running End-to-End Tests and recording with Cypress
           command: npm run e2e:ci
-      # - run:
-      #     name: Running Jest and Collect Coverage Reports with JUnit as reporter
-      #     command: |
-      #       mkdir -p ./test-results/junit
-      #       npm run test:cov
-          #environment:
-          #  JEST_JUNIT_OUTPUT: "reports/junit/jest-junit.xml"
-      # - store_test_results:
-      #     path: ./test-results
-      # - store_artifacts:
-      #     path: ./test-results/junit
-      #     destination: jest
 
       - persist_to_workspace:
           root: /home/circleci
           paths: .
 
       - run:
-          name: Finally the working directory after test steps
+          name: Finally the working directory after e2e test steps
           command: |
             ls -al
             echo '^^^That should look familiar^^^'
-  deploy:
+
+  test_e2e_staging:
+    executor: default
+    steps:
+      - attach_workspace:
+          at: /home/circleci
+
+      - run:
+          name: Running End-to-End Tests and recording with Cypress in Staging
+          command: npm run e2e:ci:staging
+
+      - persist_to_workspace:
+          root: /home/circleci
+          paths: .
+
+      - run:
+          name: Finally the working directory after e2e test step in Staging
+          command: |
+            ls -al
+            echo '^^^That should look familiar^^^'
+
+  deploy_staging:
+    executor: default
+    steps:
+      - attach_workspace:
+          at: /home/circleci
+
+      - run:
+          name: Show current branch
+          command: echo ${CIRCLE_BRANCH}
+      - run:
+          name: Building master to staging
+          command: npm run build:stage
+
+      - run:
+          name: Deploying master to Firebase staging hosting
+          command: |
+            ./node_modules/.bin/firebase deploy -m "Initial staging deployment by CircleCI." \
+            --project $FIREBASE_STAGING_PROJECT_ID \
+            --token=$FIREBASE_DEPLOY_TOKEN
+
+  deploy_production:
     executor: default
     steps:
       - attach_workspace:
@@ -134,7 +175,7 @@ jobs: # a collection of steps
       - run:
           name: Deploying Master to Firebase
           command: |
-            ./node_modules/.bin/firebase deploy -m "Initial deployment by CircleCI." \
+            ./node_modules/.bin/firebase deploy -m "Deployment by CircleCI." \
             --project $FIREBASE_PROJECT_ALIAS \
             --token=$FIREBASE_DEPLOY_TOKEN
 
@@ -160,9 +201,37 @@ workflows:
       - test:
           requires:
             - build
-      - deploy:
+      - test_e2e_staging:
           requires:
             - test
+          filters:
+            branches:
+              only:
+                - develop
+                - /release-.*/
+                - /feature-.*/
+                - /issue-.*/
+                - /bugfix-.*/
+                - /hotfix-.*/
+                - /docs-.*/
+                - /experiment-.*/
+      - test_e2e:
+          requires:
+            - test
+          filters:
+            branches:
+              only:
+                - master
+      - deploy_staging:
+          requires:
+            - test_e2e_staging
+          filters:
+            branches:
+              only:
+                - /release-.*/
+      - deploy_production:
+          requires:
+            - test_e2e
           filters:  # using regex filters requires the entire branch to match
             branches:
               only:  # only branches matching the below regex filters will run

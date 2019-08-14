@@ -1,0 +1,59 @@
+<div *ngIf="authService.user$ | async; then authenticated else guest">
+  <!-- template will replace this div -->
+</div>
+
+<!-- User NOT logged in -->
+<ng-template #guest>
+  <nb-layout-header fixed>
+    <nb-user
+      name="Hello!"
+      title="Sign in to get started...">
+    </nb-user>
+  </nb-layout-header>
+  <button
+      nbButton
+      hero
+      routerLink="/auth/login"
+      routerLinkActive="active"
+      status="primary"
+      shape="semi-round"
+      size="small">
+    Sign In
+  </button>
+</ng-template>
+
+<!-- User logged in -->
+<ng-template #authenticated>
+  <div *ngIf="authService.user$ | async as user">
+    <nb-layout-header fixed>
+      <nb-user
+        [name]="user?.email"
+        [title]="user?.uid"
+        [picture]="user?.photoURL"
+        data-cy="useravatar">
+    </nb-user>
+    </nb-layout-header>
+
+    <nb-card accent="info">
+    <nb-card-header>Profile</nb-card-header>
+    <nb-card-body>
+      <p>UID: {{ user.uid }}</p>
+      <p>Email: {{ user.email }}</p>
+      <p>Display Name: {{ user.displayName }}</p>
+      <p>Verified: {{ user.emailVerified }}</p>
+    </nb-card-body>
+    <nb-card-footer>
+      <button
+          nbButton
+          hero
+          (click)="authService.signOut()"
+          status="primary"
+          shape="semi-round"
+          size="small"
+          data-cy="logoutsubmit">
+        Sign Out
+      </button>
+    </nb-card-footer>
+  </nb-card>
+  </div>
+</ng-template>
