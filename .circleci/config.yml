@@ -150,7 +150,7 @@ jobs: # a collection of steps
           command: echo ${CIRCLE_BRANCH}
       - run:
           name: Building master to staging
-          command: npm run build:stage
+          command: npm run build:staging
 
       - run:
           name: Deploying master to Firebase staging hosting
