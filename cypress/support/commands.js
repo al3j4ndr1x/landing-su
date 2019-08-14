@@ -23,3 +23,28 @@
 //
 // -- This is will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
+
+// import { authService } from '../../src/app/auth/auth.service'
+// import { LoginComponent } from '../../src/app/auth/login/login.component'
+
+/**
+ * Custom command to log in using application method.
+ * Commands are automatically waited on, thus we don't need extra "cy.wrap"
+ * around the returned promise.
+ *
+ * @example cy.loginEmail()
+ */
+// Cypress.Commands.add('loginEmail', (email, password, rememberMe) => {
+//     return AuthService.prototype.emailLogin(email, password, rememberMe)
+// })
+
+// Cypress.Commands.add('loginEmail', () => {
+//   return LoginComponent.prototype.login()
+// })
+
+// Cypress.Commands.add(
+//   'login',
+//   (username = Cypress.env('FAKE_EMAIL'), password = Cypress.env('FAKE_PASSWORD')) => {
+//     return authService.login(username, password, true)
+//   }
+// )
