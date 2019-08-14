@@ -6,7 +6,7 @@ import { Component, OnInit, isDevMode } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  title = 'The Landing SU';
+  // title = 'The Landing SU';
   // status = isDevMode();
   ngOnInit() {
 

@@ -50,8 +50,9 @@ Thumbs.db
 # Semantic Versioning documentation
 #/docs/SEMANTIC-VERSIONING.md
 
-# git flow documentation
+# Documentation
 #/docs/GITFLOW.md
+/docs/DEPLOY-CIRCLECI.md
 
 # Coveralls config
 .coveralls.yml
@@ -88,5 +89,15 @@ firestore-debug.log
 # Environments
 .env
 /src/environments/env.ts
+/src/environments/env.stage.ts
+/src/environments/environment.staging.copy.ts
+/src/environments/environment.staging.ts
 dotenv.config.js
 dotenv.example.js
+
+# Angular CLI
+.angular-cli.json
+
+# Draft files
+/src/app/auth/auth.service.spec.ts
+/src/app/auth/__mocks__
