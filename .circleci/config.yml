@@ -215,13 +215,13 @@ workflows:
                 - /hotfix-.*/
                 - /docs-.*/
                 - /experiment-.*/
-      - test_e2e:
-          requires:
-            - test
-          filters:
-            branches:
-              only:
-                - master
+      # - test_e2e:
+      #     requires:
+      #       - test
+      #     filters:
+      #       branches:
+      #         only:
+      #           - master
       - deploy_staging:
           requires:
             - test_e2e_staging
