@@ -91,7 +91,6 @@ firestore-debug.log
 /src/environments/env.ts
 /src/environments/env.stage.ts
 /src/environments/environment.staging.copy.ts
-/src/environments/environment.staging.ts
 dotenv.config.js
 dotenv.example.js
 
