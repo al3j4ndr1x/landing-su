@@ -1,11 +1,10 @@
 /* istanbul ignore file */
 
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
-import { auth } from 'firebase/app';
 
 import { Observable, of } from 'rxjs';
 import { switchMap, first } from 'rxjs/operators';
@@ -19,25 +18,14 @@ import * as firebase from 'firebase/app';
 export class AuthService {
 
   user$: Observable<User>;
-
-  // public get isAuthenticated$(): Observable<boolean> {
-  //   return this.afAuth.authState.pipe(
-  //     switchMap(user => {
-  //       if (user) {
-  //         // logged in, get custom user from Firestore
-  //         return this.afs.doc<User>(`users/${user.uid}`).valueChanges();
-  //       } else {
-  //         // logged out, null
-  //         return of(null);
-  //       }
-  //     })
-  //   );
-  // }
+  // tslint:disable-next-line: variable-name
+  private _userClaims: any;
 
   constructor(
     private afAuth: AngularFireAuth,
     private afs: AngularFirestore,
-    private router: Router
+    private router: Router,
+    private ngZone: NgZone,
     ) {
 
     // Get the auth state, then fetch the Firestore user document or return null
@@ -53,11 +41,27 @@ export class AuthService {
       })
     );
 
+    // this.onAuthStateChanged();
+    // this.onIdTokenChanged();
   }
 
   public get isAuthenticated(): boolean {
     return !!this.afAuth.authState;
   }
+  // public get isAuthenticated$(): Observable<boolean> {
+  //   return this.afAuth.authState.pipe(
+  //     switchMap(user => {
+  //       if (user) {
+  //         // logged in, get custom user from Firestore
+  //         return this.afs.doc<User>(`users/${user.uid}`).valueChanges();
+  //       } else {
+  //         // logged out, null
+  //         return of(null);
+  //       }
+  //     })
+  //   );
+  // }
+
   // @angular/fire provides an authState Observable which is great for reacting to
   // realtime changes to the user’s login state. However, it can be useful to also
   // return this value as a Promise for one-off operations and for use with async/await.
@@ -94,8 +98,10 @@ export class AuthService {
             // return this.handleError(error);
           })
           .finally(() => {
-            return this.updateUserData(credential.user);
+            // return this.updateUserData(credential.user);
           });
+
+        return this.updateUserData(credential.user);
 
       } else {
         const credential = await this.afAuth.auth.setPersistence(firebase.auth.Auth.Persistence.SESSION)
@@ -110,8 +116,10 @@ export class AuthService {
             // return this.handleError(error);
           })
           .finally(() => {
-            return this.updateUserData(credential.user);
+            // return this.updateUserData(credential.user);
           });
+
+        return this.updateUserData(credential.user);
       }
 
       // this.notify.update('Welcome back!', 'success');
@@ -144,6 +152,59 @@ export class AuthService {
   async signOut() {
     await this.afAuth.auth.signOut();
     this.router.navigate(['/auth/login']);
+  }
+
+  public get currenUser(): firebase.User {
+    return this.afAuth.auth.currentUser;
+  }
+
+  public get userClaims(): any {
+    return this._userClaims;
+  }
+
+  private onIdTokenChanged() {
+    this.afAuth.auth.onIdTokenChanged(user => {
+      this.setUserClaims(user);
+    });
+  }
+
+  private onAuthStateChanged() {
+    this.afAuth.auth.onAuthStateChanged(user => {
+      if (user) {
+        this.setUserClaims(user);
+      } else {
+        console.log('logged out');
+      }
+      // Custom function call
+      // this.setCustomAppState(user);
+    });
+  }
+
+  // Custom function definition example
+  private setCustomAppState(user: firebase.User) {
+    const loggedOutRoute = '/login';
+    if (user) {
+      if (user.emailVerified) {
+        this.setCustomAppRoute('/');
+      } else {
+        this.setCustomAppRoute(loggedOutRoute);
+      }
+    } else {
+      this.setCustomAppRoute(loggedOutRoute);
+    }
+  }
+
+  // Custom function definition example
+  private setCustomAppRoute(route: string) {
+    this.ngZone.run(() => {
+      this.router.navigate([route]);
+    });
+  }
+
+  private setUserClaims(user: firebase.User) {
+    user.getIdTokenResult().then(idTokenResult => {
+      this._userClaims = idTokenResult.claims;
+    });
   }
 
   // If error, console log and notify user

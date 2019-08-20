@@ -31,6 +31,8 @@ import {
   NbDialogModule,
   NbWindowModule,
   NbToastrModule,
+  NbContextMenuModule,
+  NbActionsModule,
 } from '@nebular/theme';
 
 import { NbEvaIconsModule } from '@nebular/eva-icons';
@@ -67,7 +69,6 @@ const formSetting: any = {
     NbLayoutModule,
     NbSidebarModule.forRoot(), // if this is your app.module
     NbMenuModule.forRoot(),
-    NbSidebarModule.forRoot(),
     NbDatepickerModule.forRoot(),
     NbDialogModule.forRoot(),
     NbWindowModule.forRoot(),
@@ -80,6 +81,8 @@ const formSetting: any = {
     NbEvaIconsModule,
     NbIconModule,
     NbUserModule,
+    NbContextMenuModule,
+    NbActionsModule,
     NbAuthModule.forRoot({
       strategies: [
         NbPasswordAuthStrategy.setup({

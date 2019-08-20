@@ -1,5 +1,14 @@
 <nb-layout>
-  <nb-layout-header fixed>Landing SU</nb-layout-header>
+  <nb-layout-header fixed>
+    <nb-actions>
+      <nb-action icon="home-outline" link="/"></nb-action>
+      <!-- <nb-action icon="search-outline"></nb-action>
+      <nb-action icon="edit-outline"></nb-action> -->
+    </nb-actions>
+    <button nbButton ghost status="primary" (click)="toggle()" id="sidemenubutton">
+        <nb-icon icon="menu-outline"></nb-icon>
+    </button>
+  </nb-layout-header>
 
   <nb-layout-column>
     <router-outlet></router-outlet>
@@ -7,4 +16,39 @@
 
   <nb-layout-footer>Copyright &copy; 2019 Made with ❤️ by al3j4ndr1x &nbsp; <a href="https://github.com/al3j4ndr1x" target="_blank" rel="noopener"><nb-icon icon="github" nbButton></nb-icon></a>
   </nb-layout-footer>
+
+  <nb-sidebar right tag="right" state="collapsed">
+
+      <div *ngIf="authService.user$ | async; then authenticated else guest">
+        <!-- template will replace this div -->
+      </div>
+
+        <!-- User NOT logged in -->
+        <ng-template #guest>
+          <!-- <nb-user
+            name="Hello!"
+            title="Sign in to get started...">
+          </nb-user> -->
+          <!-- <nb-card size="giant"> -->
+            <nb-menu [items]="userLoggedOutItems" tag="my-context-menu">
+            </nb-menu>
+          <!-- </nb-card> -->
+        </ng-template>
+
+        <!-- User logged in -->
+        <ng-template #authenticated>
+          <div *ngIf="authService.user$ | async as user">
+          <!--  <nb-user
+              [name]="user?.email"
+              [title]="user?.uid"
+              [picture]="user?.photoURL"
+              data-cy="useravatar">
+            </nb-user> -->
+          <!-- <nb-card size="giant"> -->
+            <nb-menu [items]="userLoggedInItems" tag="my-context-menu">
+            </nb-menu>
+          <!-- </nb-card> -->
+          </div>
+        </ng-template>
+  </nb-sidebar>
 </nb-layout>

@@ -70,7 +70,7 @@ describe('HomeComponent', () => {
     // const fixture = TestBed.createComponent(AppComponent);
     // fixture.detectChanges();
     const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('h1').textContent).toContain('The future is now! 👨‍💻');
+    expect(compiled.querySelector('h1').textContent).toContain('The future is now! 👨‍💻'); // &#x1F468;&#x200D;&#x1F4BB;
   });
 
   test(`should have a button with text 'Get early access'`, () => {
