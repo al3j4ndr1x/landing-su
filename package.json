@@ -59,7 +59,8 @@
     "report:combined": "nyc report --reporter --report-dir coverage",
     "posttest:combined": "npm run report:combined",
     "cy:cov": "start-server-and-test start http://localhost:4200 cy:run",
-    "cov:report": "nyc report --reporter=text-summary --report-dir coverage"
+    "cov:report": "nyc report --reporter=text-summary --report-dir coverage",
+    "postinstall": "ngcc"
   },
   "author": "al3j4ndr1x",
   "license": "MIT",
