@@ -74,24 +74,23 @@ export class AuthService {
   // Email/Password Auth Sign Up
   async emailSignUp(email: string, password: string) {
     try {
-      const credential = await this.afAuth.auth
-        .createUserWithEmailAndPassword(email, password);
+      const credential = await this.afAuth.createUserWithEmailAndPassword(email, password);
       // this.notify.update('Welcome new user!', 'success');
       return await this.updateUserData(credential.user); // if using firestore
     } catch (error) {
-      return await this.handleError(error);
+      return this.handleError(error);
     }
   }
 
   async emailLogin(email: string, password: string, rememberMe: boolean) {
     try {
       if (rememberMe) {
-        const credential = await this.afAuth.auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+        const credential = await this.afAuth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
           .then(() => {
             // Indica que el estado persistirá incluso cuando se cierre la ventana del navegador
             // o se anule la actividad. Se debe salir de la cuenta de forma explícita para desactivar ese estado.
             // New sign-in will be persisted with Local persistence.
-            return this.afAuth.auth.signInWithEmailAndPassword(email, password);
+            return this.afAuth.signInWithEmailAndPassword(email, password);
           })
           .catch((error) => {
             throw error;
@@ -104,12 +103,12 @@ export class AuthService {
         return this.updateUserData(credential.user);
 
       } else {
-        const credential = await this.afAuth.auth.setPersistence(firebase.auth.Auth.Persistence.SESSION)
+        const credential = await this.afAuth.setPersistence(firebase.auth.Auth.Persistence.SESSION)
           .then(() => {
             // SESSION Indica que el estado solo persistirá en la sesión o pestaña actual
             // y se desactivará cuando se cierre la pestaña o ventana en la que el usuario está autenticado.
             // New sign-in will be persisted with Session persistence.
-            return this.afAuth.auth.signInWithEmailAndPassword(email, password);
+            return this.afAuth.signInWithEmailAndPassword(email, password);
           })
           .catch((error) => {
             throw error;
@@ -124,7 +123,7 @@ export class AuthService {
 
       // this.notify.update('Welcome back!', 'success');
     } catch (error) {
-      return await this.handleError(error);
+      return this.handleError(error);
     }
   }
 
@@ -150,12 +149,12 @@ export class AuthService {
   }
 
   async signOut() {
-    await this.afAuth.auth.signOut();
+    await this.afAuth.signOut();
     this.router.navigate(['/auth/login']);
   }
 
-  public get currenUser(): firebase.User {
-    return this.afAuth.auth.currentUser;
+  public get currentUser(): any {
+    return this.afAuth.currentUser;
   }
 
   public get userClaims(): any {
@@ -163,13 +162,13 @@ export class AuthService {
   }
 
   private onIdTokenChanged() {
-    this.afAuth.auth.onIdTokenChanged(user => {
+    this.afAuth.onIdTokenChanged(user => {
       this.setUserClaims(user);
     });
   }
 
   private onAuthStateChanged() {
-    this.afAuth.auth.onAuthStateChanged(user => {
+    this.afAuth.onAuthStateChanged(user => {
       if (user) {
         this.setUserClaims(user);
       } else {
