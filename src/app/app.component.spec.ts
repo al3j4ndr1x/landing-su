@@ -7,11 +7,8 @@ import {
   NbSidebarModule,
   NbLayoutModule,
   NbButtonModule,
-  NbInputModule,
-  NbCardModule,
   NbIconModule,
   NbContextMenuModule,
-  NbUserModule,
   NbMenuModule,
   NbActionsModule} from '@nebular/theme';
 import { NbEvaIconsModule } from '@nebular/eva-icons';
@@ -116,11 +113,8 @@ describe('AppComponent', () => {
         NbSidebarModule.forRoot(),
         NbMenuModule.forRoot(),
         NbButtonModule,
-        NbInputModule,
-        NbCardModule,
         NbEvaIconsModule,
         NbIconModule,
-        NbUserModule,
         NbContextMenuModule,
         NbActionsModule,
       ],

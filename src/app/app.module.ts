@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NgModule } from '@angular/core';
+import { NgModule, LOCALE_ID } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -20,17 +20,9 @@ import {
   NbSidebarModule,
   NbLayoutModule,
   NbButtonModule,
-  NbInputModule,
-  NbCardModule,
-  NbAlertModule,
-  NbCheckboxModule,
   NbIconModule,
-  NbUserModule,
   NbMenuModule,
   NbDatepickerModule,
-  NbDialogModule,
-  NbWindowModule,
-  NbToastrModule,
   NbContextMenuModule,
   NbActionsModule,
 } from '@nebular/theme';
@@ -38,9 +30,16 @@ import {
 import { NbEvaIconsModule } from '@nebular/eva-icons';
 
 import { NbPasswordAuthStrategy, NbAuthModule } from '@nebular/auth';
-import { HomeComponent } from './components/home/home.component';
-import { ProfileComponent } from './components/profile/profile.component';
+import { HomeComponent } from './home/home.component';
 import { AuthGuard } from './auth/auth.guard';
+
+import { NbDateFnsDateModule } from '@nebular/date-fns';
+
+import { registerLocaleData } from '@angular/common';
+import localeCl from '@angular/common/locales/es-CL';
+import localeClExtra from '@angular/common/locales/extra/es-CL';
+// the second parameter 'es-CL' is optional
+registerLocaleData(localeCl, 'es-CL', localeClExtra);
 
 const formSetting: any = {
   redirectDelay: 0,
@@ -51,8 +50,7 @@ const formSetting: any = {
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent,
-    ProfileComponent
+    HomeComponent
   ],
   imports: [
     BrowserModule,
@@ -69,20 +67,15 @@ const formSetting: any = {
     NbLayoutModule,
     NbSidebarModule.forRoot(), // if this is your app.module
     NbMenuModule.forRoot(),
-    NbDatepickerModule.forRoot(),
-    NbDialogModule.forRoot(),
-    NbWindowModule.forRoot(),
-    NbToastrModule.forRoot(),
     NbButtonModule,
-    NbInputModule,
-    NbCardModule,
-    NbAlertModule,
-    NbCheckboxModule,
     NbEvaIconsModule,
     NbIconModule,
-    NbUserModule,
     NbContextMenuModule,
     NbActionsModule,
+    NbDatepickerModule.forRoot(),
+    NbDateFnsDateModule.forRoot({
+      format: 'dd-MM-yyyy'
+    }),
     NbAuthModule.forRoot({
       strategies: [
         NbPasswordAuthStrategy.setup({
@@ -108,7 +101,7 @@ const formSetting: any = {
     }),
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
-  providers: [AuthGuard, AngularFireAuthGuard],
+  providers: [AuthGuard, AngularFireAuthGuard, {provide: LOCALE_ID, useValue: 'es-CL' }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

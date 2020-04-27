@@ -3,6 +3,7 @@ import { AuthService } from './auth/auth.service';
 import { NbMenuService, NbMenuItem, NbSidebarService } from '@nebular/theme';
 import { takeWhile, filter, map, switchMap } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
+import { Router, RouterEvent, RouteConfigLoadStart, RouteConfigLoadEnd } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -10,14 +11,27 @@ import { Observable, of } from 'rxjs';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit, OnDestroy {
+  loading: boolean;
   alive = true;
   selectedItem: string;
   itemMenuBag$: Observable<any>;
 
   constructor(
+    router: Router,
     public authService: AuthService,
     private menuService: NbMenuService,
-    private sidebarService: NbSidebarService) { }
+    private sidebarService: NbSidebarService) {
+      this.loading = false;
+      router.events.subscribe(
+        (event: RouterEvent): void => {
+          if (event instanceof RouteConfigLoadStart) {
+            this.loading = true;
+          } else if (event instanceof RouteConfigLoadEnd) {
+            this.loading = false;
+          }
+        }
+      );
+    }
 
   userLoggedInItems: NbMenuItem[] = [
     {

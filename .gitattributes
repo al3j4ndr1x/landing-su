@@ -1,0 +1,6 @@
+# Auto detect text files and perform LF normalization
+# files must always use LF for tools to work
+* text=auto eol=lf
+# Must keep Windows line ending to be parsed correctly
+*.{cmd,[cC][mM][dD]} text eol=crlf
+*.{bat,[bB][aA][tT]} text eol=crlf

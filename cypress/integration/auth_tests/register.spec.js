@@ -132,7 +132,7 @@ describe('Landing SU Register', () => {
       .should('not.be.disabled') // Assert that button is enabled
       .click()
 
-    cy.wait(500) // wait 500ms for response
+    cy.wait(1000) // wait 500ms for response
 
   })
 

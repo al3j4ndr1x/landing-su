@@ -34,9 +34,9 @@ jobs: # a collection of steps
       - restore_cache: # special step to restore the dependency cache
           # Read about caching dependencies: https://circleci.com/docs/2.0/caching/
           keys:
-            - v3.2-node-dependencies-{{ .Branch }}-{{ checksum "package-lock.json" }}
-            - v3.2-node-dependencies-{{ .Branch }}
-            - v3.2-node-dependencies-
+            - v3.3-node-dependencies-{{ .Branch }}-{{ checksum "package-lock.json" }}
+            - v3.3-node-dependencies-{{ .Branch }}
+            - v3.3-node-dependencies-
 
       - run:
           name: Installing Dependencies
@@ -53,7 +53,7 @@ jobs: # a collection of steps
       - save_cache: # special step to save the dependency cache
           # cache NPM modules and the folder with the Cypress binary
           paths:
-            - node_modules
+            #- node_modules
             - functions/node_modules
             - ~/.npm
             - ~/.cache
@@ -63,7 +63,7 @@ jobs: # a collection of steps
             #- .firebaserc
             - firestore.rules
             - firestore.indexes.json
-          key: v3.2-node-dependencies-{{ .Branch }}-{{ checksum "package-lock.json" }}
+          key: v3.3-node-dependencies-{{ .Branch }}-{{ checksum "package-lock.json" }}
 
       - persist_to_workspace:
           root: /home/circleci
@@ -109,6 +109,14 @@ jobs: # a collection of steps
           name: Running End-to-End Tests and recording with Cypress
           command: npm run e2e:ci
 
+      # - store_test_results:
+      #     path: ./cypress-coverage
+      # - store_artifacts:
+      #     path: ./cypress-coverage
+      #     destination: cypress-coverage
+      # # print code coverage summary to the terminal
+      # - run: npm run cov:report
+
       - persist_to_workspace:
           root: /home/circleci
           paths: .
@@ -128,6 +136,14 @@ jobs: # a collection of steps
       - run:
           name: Running End-to-End Tests and recording with Cypress in Staging
           command: npm run e2e:ci:staging
+
+      # - store_test_results:
+      #     path: ./cypress-coverage
+      # - store_artifacts:
+      #     path: ./cypress-coverage
+      #     destination: cypress-coverage
+      # # print code coverage summary to the terminal
+      # - run: npm run cov:report
 
       - persist_to_workspace:
           root: /home/circleci
@@ -155,7 +171,7 @@ jobs: # a collection of steps
       - run:
           name: Deploying master to Firebase staging hosting
           command: |
-            ./node_modules/.bin/firebase deploy -m "Initial staging deployment by CircleCI." \
+            ./node_modules/.bin/firebase deploy -m "Staging deployed with CircleCI." \
             --project $FIREBASE_STAGING_PROJECT_ID \
             --token=$FIREBASE_DEPLOY_TOKEN
 
@@ -175,7 +191,7 @@ jobs: # a collection of steps
       - run:
           name: Deploying Master to Firebase
           command: |
-            ./node_modules/.bin/firebase deploy -m "Deployment by CircleCI." \
+            ./node_modules/.bin/firebase deploy -m "Deployed with CircleCI." \
             --project $FIREBASE_PROJECT_ALIAS \
             --token=$FIREBASE_DEPLOY_TOKEN
 

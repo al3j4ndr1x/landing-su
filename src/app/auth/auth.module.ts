@@ -32,7 +32,6 @@ import { RegisterComponent } from './register/register.component';
     NbCheckboxModule,
     NbAuthModule,
     NbIconModule,
-    NbLayoutModule,
     NbUserModule,
   ]
 })
