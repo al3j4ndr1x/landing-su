@@ -1,4 +1,4 @@
-import { TestBed, async, ComponentFixture, ComponentFixtureAutoDetect } from '@angular/core/testing';
+import { TestBed, ComponentFixture, ComponentFixtureAutoDetect, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
 
@@ -63,7 +63,7 @@ const FirestoreStub = {
   collection: (name: string) => ({
     doc: (uid: string) => ({
       valueChanges: () => new BehaviorSubject({ foo: 'bar' }),
-      set: (id: any) => new Promise((resolve, reject) => resolve()),
+      set: (id: any) => new Promise((resolve, reject) => resolve(123)),
     }),
   }),
 };
@@ -80,7 +80,7 @@ describe('AppComponent', () => {
   let sidebarServiceStub: Partial<NbSidebarService>;
   let menuServiceStub: Partial<NbMenuService>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
 
     // stub NbSidebarService for test purposes
     sidebarServiceStub = {
