@@ -42,13 +42,13 @@
 ### build
 - **core**: initial project configuration.
 
-<!-- ### Dependency updates -->
+<!-- ### Dependency updates
 
-<!-- ### Features -->
+### Features
 
-<!-- ### Code Refactoring -->
+### Code Refactoring
 
-<!-- ### Performance Improvements
+### Performance Improvements
 
 ### Testing
 
