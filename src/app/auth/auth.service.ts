@@ -85,7 +85,7 @@ export class AuthService {
   async emailLogin(email: string, password: string, rememberMe: boolean) {
     try {
       if (rememberMe) {
-        const credential = await this.afAuth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+        const credential = await this.afAuth.setPersistence(firebase.default.auth.Auth.Persistence.LOCAL)
           .then(() => {
             // Indica que el estado persistirá incluso cuando se cierre la ventana del navegador
             // o se anule la actividad. Se debe salir de la cuenta de forma explícita para desactivar ese estado.
@@ -103,7 +103,7 @@ export class AuthService {
         return this.updateUserData(credential.user);
 
       } else {
-        const credential = await this.afAuth.setPersistence(firebase.auth.Auth.Persistence.SESSION)
+        const credential = await this.afAuth.setPersistence(firebase.default.auth.Auth.Persistence.SESSION)
           .then(() => {
             // SESSION Indica que el estado solo persistirá en la sesión o pestaña actual
             // y se desactivará cuando se cierre la pestaña o ventana en la que el usuario está autenticado.
@@ -180,7 +180,7 @@ export class AuthService {
   }
 
   // Custom function definition example
-  private setCustomAppState(user: firebase.User) {
+  private setCustomAppState(user: firebase.default.User) {
     const loggedOutRoute = '/login';
     if (user) {
       if (user.emailVerified) {
@@ -200,7 +200,7 @@ export class AuthService {
     });
   }
 
-  private setUserClaims(user: firebase.User) {
+  private setUserClaims(user: firebase.default.User) {
     user.getIdTokenResult().then(idTokenResult => {
       this._userClaims = idTokenResult.claims;
     });
@@ -208,7 +208,7 @@ export class AuthService {
 
   // If error, console log and notify user
   /* istanbul ignore next */
-  private handleError(error: firebase.auth.Error) {
+  private handleError(error: firebase.default.auth.Error) {
     // console.error(error);
     // this.notify.update(error.message, 'error');
     const errorCode = error.code;
