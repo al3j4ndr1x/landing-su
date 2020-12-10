@@ -59,21 +59,28 @@ git push origin develop
 ### `topic/feature` branch
 
 #### Checkout a new branch 'myfeature' from 'develop'
+
 ```bash
 git checkout -b myfeature develop
 git commit -a
 ```
+
 #### Checkout branch 'develop' and Rebase 'myfeature'
+
 ```bash
 git checkout develop
 git merge --no-ff myfeature
 git push origin develop
 ```
-<sup>If your branch includes more than one commit, do not merge with a fast-forward.</sup>
-### `release` branch
+
+>If your branch includes more than one commit, do not merge with a fast-forward.
+
+### `release`
+
 If we are ready to release a new version, we create a new release branch.
 
 #### Checkout a new branch '1.2.x' from 'develop'
+
 ```bash
 git checkout -b 1.2.x develop
 # Assign the new version in project files, then commit
@@ -82,24 +89,31 @@ git push -u origin 1.2.x
 ```
 
 #### Pull Request (PR)
+
 In **_Github_** compare and create a new pull request. Write a comment with version and topic issues ids, if apply.
 
 #### Continuous Integration (CI)
+
 Check if pass tests with **_CircleCI_**.
 
 #### Merge and Commit with 'master'
+
 Write a comment with the new version **1.2.0** assigned previously.
 
 #### Release and Tag
+
 In **_Github_**, create a new Release **1.2.0** and create a new Tag **1.2.0**, too.
 
 #### Pull 'origin/master'
+
 ```bash
 git checkout master
 git pull origin master
 git tag --list
 ```
+
 #### Checkout 'develop' and Rebase
+
 ```shell
 git checkout develop
 git rebase master
@@ -108,6 +122,7 @@ git log --graph --oneline --decorate
 ```
 
 #### Delete local feature branch
+
 ```shell
 git branch --delete myfeature
 ```
@@ -129,28 +144,35 @@ git commit -m "Fixed severe production problem"
 ```
 
 #### Push 'hotfix-1.2.1' on remote
+
 ```bash
 git push -u origin hotfix-1.2.1
 ```
 
 #### Pull Request (PR)
+
 In **_Github_**, compare and create a new pull request. Write a comment with version and bug/fix issue id.
 
 #### Continuous Integration (CI)
+
 Check if pass tests with **_CircleCI_**.
 
 #### Merge and Commit with 'master'
+
 Write a comment with the new version **1.2.1** assigned previously.
 
 #### Release and Tag
+
 In **_Github_**, create a new Release version **1.2.1** and Tag **1.2.1**.
 
 #### Pull 'origin/master'
+
 ```bash
 git checkout master
 git pull origin master
 git tag --list
 ```
+
 #### Next, include the hotfix in `develop`, too:
 
 ```shell
@@ -160,7 +182,7 @@ git push origin develop
 git log --graph --oneline --decorate
 ```
 
-#### Finally, remove the temporary branch:
+#### Finally, remove the temporary branch
 
 ```shell
 git branch --delete hotfix-1.2.1
@@ -169,7 +191,9 @@ git branch --delete hotfix-1.2.1
 ## git extras
 
 ### Tracking Branches
+
 If you already have a local branch and want to set it to a remote branch you just pulled down, or want to change the upstream branch you're tracking, you can use the `-u` or `--set-upstream-to` option to `git branch` to explicitly set it at any time.
+
 ```shell
 git branch -u origin/develop
 
@@ -179,13 +203,16 @@ Branch develop set up to track remote branch develop from origin.
 ### Reset local repository branch to be just like remote repository HEAD
 
 If you want to save your current branch's state before doing this (just in case), you can do:
+
 ```shell
 git commit -a -m "Saving my work, just in case"
 git branch my-saved-work
 ```
+
 Now your work is saved on the branch "my-saved-work" in case you decide you want it back (or want to look at it later or diff it against your updated branch).
 
 Setting your branch to exactly match the remote branch can be done in two steps:
+
 ```shell
 git fetch origin
 git reset --hard origin/master
@@ -194,34 +221,43 @@ git reset --hard origin/master
 ### Undo a git push
 
 #### to undo a git push
+
 ```bash
 git push -f origin HEAD^:master
 ```
+
 #### to get to previous commit (preserves working tree)
+
 ```bash
 git reset --soft HEAD
 ```
+
 #### to get back to previous commit (you'll lose working tree)
+
 ```bash
 git reset --hard HEAD^
 ```
 
 ### Fix the last commit message
-**Scenario**: You just typo'd the last commit message, you did `git commit -m "Fxies bug #42"` but before `git push` you realized that really should say "Fixes bug #42".
+
+**Scenario**: You just typo'd the last commit message, you did `git commit -m "Fxies bug #42"` but before `git
+push` you realized that really should say "Fixes bug #42".
 
 **Undo with**: `git commit --amend` or `git commit --amend -m "Fixes bug #42"`
 
 **What's happening**: `git commit --amend` will update and replace the most recent commit with a new commit that combines any staged changes with the contents of the previous commit. With nothing currently staged, this just rewrites the previous commit message.
 
-### Add a new file, and stage it, to the last commit 
+### Add a new file, and stage it, to the last commit
+
 **Scenario**: I want to add or remove a file from the previous commit.
 In order to remove changes for a file from the previous commit, do the following:
 
 **Edit with**:
-```shell
-$ git checkout HEAD^ myfile # if remove a file
-$ git add myfile
-$ git commit --amend --no-edit
+
+```bash
+$git checkout HEAD^ myfile # if remove a file
+$git add myfile
+$git commit --amend --no-edit
 ```
 
 **What's happening**: `git commit --amend --no-edit` will update the previous commit with the new file. The `--no-edit` option is used to keep the existing commit message.
@@ -237,6 +273,7 @@ $ git commit --amend --no-edit
 Keep in mind: any changes you "undo" this way are really gone. They were never committed, so Git can't help us recover them later. Be sure you know what you're throwing away here! (Maybe use `git diff` to confirm).
 
 ### Check GIT ignored files
+
 `git ls-files --others --ignored --exclude-standard`
 
 ## References
