@@ -102,7 +102,7 @@ describe('Landing SU Login', () => {
     cy.get('button[data-cy=submit]')
       .click();
 
-    cy.wait(5000) // wait 500ms for response
+    cy.wait(2000) // wait 500ms for response
 
     // custom commands are automatically chained
     // Sign In via AuthService with params: email, pass, rememberMe

@@ -1,5 +1,9 @@
 {
   "baseUrl": "http://localhost:4200",
   "ignoreTestFiles": "**/examples/*.js",
-  "projectId": "exs3bs"
+  "projectId": "exs3bs",
+  "retries": {
+    "runMode": 2,
+    "openMode": 1
+  }
 }
