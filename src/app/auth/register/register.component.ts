@@ -8,9 +8,6 @@ import { AngularFirestoreDocument, AngularFirestore } from '@angular/fire/firest
 import { User } from '../model/user.model';
 import { Observable, of } from 'rxjs';
 
-import { auth } from 'firebase/app';
-import { switchMap } from 'rxjs/operators';
-
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',

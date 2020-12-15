@@ -67,11 +67,18 @@ Thumbs.db
 /cypress/screenshots
 cypress.env.json
 
+# Coverage Cypress
+/cypress-coverage
+.nyc_output
+
 # Jest JUnit reporter
 junit.xml
 /reports
 /test-results
 ./test-results
+
+# Coverage Jest
+/jest-coverage
 
 # Firebase
 .firebaserc

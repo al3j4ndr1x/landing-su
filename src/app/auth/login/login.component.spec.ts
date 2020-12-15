@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed, ComponentFixtureAutoDetect } from '@angular/core/testing';
+import { ComponentFixture, TestBed, ComponentFixtureAutoDetect, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { LoginComponent } from './login.component';
@@ -69,7 +69,7 @@ const FirestoreStub = {
   collection: (name: string) => ({
     doc: (uid: string) => ({
       valueChanges: () => new BehaviorSubject({ foo: 'bar' }),
-      set: (uid: any) => new Promise((resolve, reject) => resolve()),
+      set: (uid: any) => new Promise((resolve, reject) => resolve(123)),
     }),
   }),
 };
@@ -85,7 +85,7 @@ describe('LoginComponent', () => {
 
   let authService: AuthService;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
         RouterTestingModule,

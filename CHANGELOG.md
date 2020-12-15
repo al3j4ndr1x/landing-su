@@ -1,3 +1,12 @@
+# Changelog
+
+## Unreleased
+
+- none
+
+<a name="0.1.4"></a>
+# [0.1.4](#) (2020-12-15)
+
 <a name="0.1.3"></a>
 # [0.1.3](#) (2019-08-14)
 
@@ -36,13 +45,13 @@
 ### build
 - **core**: initial project configuration.
 
-<!-- ### Dependency updates -->
+<!-- ### Dependency updates
 
-<!-- ### Features -->
+### Features
 
-<!-- ### Code Refactoring -->
+### Code Refactoring
 
-<!-- ### Performance Improvements
+### Performance Improvements
 
 ### Testing
 

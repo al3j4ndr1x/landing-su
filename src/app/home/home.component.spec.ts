@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed, ComponentFixtureAutoDetect } from '@angular/core/testing';
+import { ComponentFixture, TestBed, ComponentFixtureAutoDetect, waitForAsync } from '@angular/core/testing';
 
 import { HomeComponent } from './home.component';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -17,7 +17,7 @@ describe('HomeComponent', () => {
   let component: HomeComponent;
   let fixture: ComponentFixture<HomeComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
         RouterTestingModule,
@@ -70,7 +70,7 @@ describe('HomeComponent', () => {
     // const fixture = TestBed.createComponent(AppComponent);
     // fixture.detectChanges();
     const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('h1').textContent).toContain('The future is now! 👨‍💻');
+    expect(compiled.querySelector('h1').textContent).toContain('The future is now! 👨‍💻'); // &#x1F468;&#x200D;&#x1F4BB;
   });
 
   test(`should have a button with text 'Get early access'`, () => {
