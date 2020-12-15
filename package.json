@@ -113,7 +113,7 @@
     "coveralls": "^3.1.0",
     "cypress": "^6.1.0",
     "dotenv": "^8.2.0",
-    "firebase-tools": "^8.18.1",
+    "firebase-tools": "^8.19.0",
     "husky": "^4.3.5",
     "istanbul-instrumenter-loader": "^3.0.1",
     "istanbul-lib-coverage": "^3.0.0",
