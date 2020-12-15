@@ -15,7 +15,7 @@ export class AppComponent implements OnInit, OnDestroy {
   alive = true;
   selectedItem: string;
   itemMenuBag$: Observable<any>;
-
+  /* istanbul ignore next */
   constructor(
     router: Router,
     public authService: AuthService,
