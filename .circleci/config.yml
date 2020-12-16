@@ -42,9 +42,9 @@ jobs: # a collection of steps
           name: Installing Dependencies
           command: npm ci
 
-      - run:
-          name: Installing Google Cloud Functions Dependencies
-          command: cd functions && npm ci
+      # - run:
+      #     name: Installing Google Cloud Functions Dependencies
+      #     command: cd functions && npm ci
 
       - run:
           name: Verifying Cypress
@@ -172,6 +172,7 @@ jobs: # a collection of steps
           name: Deploying master to Firebase staging hosting
           command: |
             ./node_modules/.bin/firebase deploy -m "Staging deployed with CircleCI." \
+            --only hosting, firestore, firestore:rules \
             --project $FIREBASE_STAGING_PROJECT_ID \
             --token=$FIREBASE_DEPLOY_TOKEN
 
@@ -192,6 +193,7 @@ jobs: # a collection of steps
           name: Deploying Master to Firebase
           command: |
             ./node_modules/.bin/firebase deploy -m "Deployed with CircleCI." \
+            --only hosting, firestore, firestore:rules \
             --project $FIREBASE_PROJECT_ALIAS \
             --token=$FIREBASE_DEPLOY_TOKEN
 
