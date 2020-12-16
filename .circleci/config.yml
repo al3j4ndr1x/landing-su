@@ -5,7 +5,7 @@ executors:
   default:
     working_directory: ~/repo
     docker: # run the steps with Docker
-      - image: circleci/node:14-browsers
+      - image: circleci/node:12-browsers
         environment:
           ## this enables colors in the output
           TERM: xterm
@@ -34,9 +34,9 @@ jobs: # a collection of steps
       - restore_cache: # special step to restore the dependency cache
           # Read about caching dependencies: https://circleci.com/docs/2.0/caching/
           keys:
-            - v3.4-node-dependencies-{{ .Branch }}-{{ checksum "package-lock.json" }}
-            - v3.4-node-dependencies-{{ .Branch }}
-            - v3.4-node-dependencies-
+            - v3.5-node-dependencies-{{ .Branch }}-{{ checksum "package-lock.json" }}
+            - v3.5-node-dependencies-{{ .Branch }}
+            - v3.5-node-dependencies-
 
       - run:
           name: Installing Dependencies
@@ -63,7 +63,7 @@ jobs: # a collection of steps
             #- .firebaserc
             - firestore.rules
             - firestore.indexes.json
-          key: v3.4-node-dependencies-{{ .Branch }}-{{ checksum "package-lock.json" }}
+          key: v3.5-node-dependencies-{{ .Branch }}-{{ checksum "package-lock.json" }}
 
       - persist_to_workspace:
           root: /home/circleci
@@ -172,7 +172,7 @@ jobs: # a collection of steps
           name: Deploying master to Firebase staging hosting
           command: |
             ./node_modules/.bin/firebase deploy -m "Staging deployed with CircleCI." \
-            --only hosting, firestore, firestore:rules \
+            --only hosting, firestore \
             --project $FIREBASE_STAGING_PROJECT_ID \
             --token=$FIREBASE_DEPLOY_TOKEN
 
@@ -193,7 +193,7 @@ jobs: # a collection of steps
           name: Deploying Master to Firebase
           command: |
             ./node_modules/.bin/firebase deploy -m "Deployed with CircleCI." \
-            --only hosting, firestore, firestore:rules \
+            --only hosting, firestore \
             --project $FIREBASE_PROJECT_ALIAS \
             --token=$FIREBASE_DEPLOY_TOKEN
 
