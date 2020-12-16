@@ -22,7 +22,7 @@ export class RegisterComponent
 
   constructor(
     public nbAuth: NbAuthService,
-    @Inject(NB_AUTH_OPTIONS) public options: {},
+    @Inject(NB_AUTH_OPTIONS) public options: Record<string, unknown>,
     public cd: ChangeDetectorRef,
     public router: Router,
     private afAuth: AngularFireAuth,

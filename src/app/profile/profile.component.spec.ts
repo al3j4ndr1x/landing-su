@@ -39,17 +39,17 @@ const userMock: User = {
 
 describe('ProfileComponent', () => {
 
-  const AngularFireMock = jest.fn();
-  const AuthFireMock = jest.fn();
-  const RouterMock = jest.fn();
-  const AuthServiceMock = jest.fn().mockImplementation(() => ({
+  const angularFireMock = jest.fn();
+  const authFireMock = jest.fn();
+  const routerMock = jest.fn();
+  const authServiceMock = jest.fn().mockImplementation(() => ({
     isAuthenticated: jest.fn(),
   }));
 
-  const afAuth = new AngularFireMock();
-  const afs = new AuthFireMock();
-  const router = new RouterMock();
-  const authService = new AuthServiceMock();
+  const afAuth = new angularFireMock();
+  const afs = new authFireMock();
+  const router = new routerMock();
+  const authService = new authServiceMock();
 
 
   // let profileComponent: ProfileComponent;

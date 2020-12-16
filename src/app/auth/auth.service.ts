@@ -18,8 +18,8 @@ import * as firebase from 'firebase/app';
 export class AuthService {
 
   user$: Observable<User>;
-  // tslint:disable-next-line: variable-name
-  private _userClaims: any;
+  // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
+  private userClaims: any;
 
   constructor(
     private afAuth: AngularFireAuth,
@@ -86,12 +86,12 @@ export class AuthService {
     try {
       if (rememberMe) {
         const credential = await this.afAuth.setPersistence(firebase.default.auth.Auth.Persistence.LOCAL)
-          .then(() => {
+          .then(() =>
             // Indica que el estado persistirá incluso cuando se cierre la ventana del navegador
             // o se anule la actividad. Se debe salir de la cuenta de forma explícita para desactivar ese estado.
             // New sign-in will be persisted with Local persistence.
-            return this.afAuth.signInWithEmailAndPassword(email, password);
-          })
+            this.afAuth.signInWithEmailAndPassword(email, password)
+          )
           .catch((error) => {
             throw error;
             // return this.handleError(error);
@@ -104,12 +104,12 @@ export class AuthService {
 
       } else {
         const credential = await this.afAuth.setPersistence(firebase.default.auth.Auth.Persistence.SESSION)
-          .then(() => {
+          .then(() =>
             // SESSION Indica que el estado solo persistirá en la sesión o pestaña actual
             // y se desactivará cuando se cierre la pestaña o ventana en la que el usuario está autenticado.
             // New sign-in will be persisted with Session persistence.
-            return this.afAuth.signInWithEmailAndPassword(email, password);
-          })
+            this.afAuth.signInWithEmailAndPassword(email, password)
+          )
           .catch((error) => {
             throw error;
             // return this.handleError(error);
@@ -132,6 +132,10 @@ export class AuthService {
   //   const credential = await this.afAuth.auth.signInWithPopup(provider);
   //   return this.updateUserData(credential.user);
   // }
+  async signOut() {
+    await this.afAuth.signOut();
+    this.router.navigate(['/auth/login']);
+  }
 
   private updateUserData(user: any) {
     // Sets user data to firestore on login
@@ -148,17 +152,12 @@ export class AuthService {
 
   }
 
-  async signOut() {
-    await this.afAuth.signOut();
-    this.router.navigate(['/auth/login']);
-  }
-
   public get currentUser(): any {
     return this.afAuth.currentUser;
   }
 
-  public get userClaims(): any {
-    return this._userClaims;
+  public get getUserClaims(): any {
+    return this.userClaims;
   }
 
   private onIdTokenChanged() {
@@ -202,7 +201,7 @@ export class AuthService {
 
   private setUserClaims(user: firebase.default.User) {
     user.getIdTokenResult().then(idTokenResult => {
-      this._userClaims = idTokenResult.claims;
+      this.userClaims = idTokenResult.claims;
     });
   }
 

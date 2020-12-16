@@ -63,7 +63,7 @@ const angularFireAuthStub = {
   },
 };
 
-const FirestoreStub = {
+const firestoreStub = {
   collection: (name: string) => ({
     doc: (uid: string) => ({
       valueChanges: () => new BehaviorSubject({ foo: 'bar' }),
@@ -106,7 +106,7 @@ describe('RegisterComponent', () => {
       ],
       providers: [
         { provide: AngularFireAuth, useValue: angularFireAuthStub },
-        { provide: AngularFirestore, useValue: FirestoreStub },
+        { provide: AngularFirestore, useValue: firestoreStub },
         { provide: ComponentFixtureAutoDetect, useValue: true }
       ]
     }).compileComponents();

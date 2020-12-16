@@ -4,7 +4,7 @@ import { NbLoginComponent, NbAuthService, NB_AUTH_OPTIONS } from '@nebular/auth'
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AuthService } from '../auth.service';
-import * as firebase from 'firebase/app';
+// import * as firebase from 'firebase/app';
 
 @Component({
   selector: 'app-login',
@@ -17,7 +17,7 @@ export class LoginComponent extends NbLoginComponent implements OnInit {
 
   constructor(
     public nbAuth: NbAuthService,
-    @Inject(NB_AUTH_OPTIONS) public options: {},
+    @Inject(NB_AUTH_OPTIONS) public options: Record<string, unknown>,
     public cd: ChangeDetectorRef,
     public router: Router,
     private afAuth: AngularFireAuth,
@@ -26,7 +26,7 @@ export class LoginComponent extends NbLoginComponent implements OnInit {
 
       super(nbAuth, options, cd, router);
 
-     }
+    }
 
   ngOnInit() { }
 

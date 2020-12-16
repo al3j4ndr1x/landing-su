@@ -59,7 +59,7 @@ const angularFireAuthStub = {
   },
 };
 
-const FirestoreStub = {
+const firestoreStub = {
   collection: (name: string) => ({
     doc: (uid: string) => ({
       valueChanges: () => new BehaviorSubject({ foo: 'bar' }),
@@ -123,7 +123,7 @@ describe('AppComponent', () => {
       ],
       providers: [
         { provide: AngularFireAuth, useValue: angularFireAuthStub },
-        { provide: AngularFirestore, useValue: FirestoreStub },
+        { provide: AngularFirestore, useValue: firestoreStub },
        // { provide: NbMenuService, useValue: menuServiceStub },
        // { provide: NbSidebarService, useValue: sidebarServiceStub },
         { provide: ComponentFixtureAutoDetect, useValue: true },
