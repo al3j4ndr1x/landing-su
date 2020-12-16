@@ -15,23 +15,6 @@ export class AppComponent implements OnInit, OnDestroy {
   alive = true;
   selectedItem: string;
   itemMenuBag$: Observable<any>;
-  /* istanbul ignore next */
-  constructor(
-    router: Router,
-    public authService: AuthService,
-    private menuService: NbMenuService,
-    private sidebarService: NbSidebarService) {
-      this.loading = false;
-      router.events.subscribe(
-        (event: RouterEvent): void => {
-          if (event instanceof RouteConfigLoadStart) {
-            this.loading = true;
-          } else if (event instanceof RouteConfigLoadEnd) {
-            this.loading = false;
-          }
-        }
-      );
-    }
 
   userLoggedInItems: NbMenuItem[] = [
     {
@@ -76,6 +59,24 @@ export class AppComponent implements OnInit, OnDestroy {
       link: '/auth/login',
     },
   ];
+
+  /* istanbul ignore next */
+  constructor(
+    router: Router,
+    public authService: AuthService,
+    private menuService: NbMenuService,
+    private sidebarService: NbSidebarService) {
+      this.loading = false;
+      router.events.subscribe(
+        (event: RouterEvent): void => {
+          if (event instanceof RouteConfigLoadStart) {
+            this.loading = true;
+          } else if (event instanceof RouteConfigLoadEnd) {
+            this.loading = false;
+          }
+        }
+      );
+    }
 
   // title = 'The Landing SU';
   // status = isDevMode();
