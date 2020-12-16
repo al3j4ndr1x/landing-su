@@ -1,6 +1,7 @@
+# Landing SU v0.2.0
+
 [![CircleCI](https://circleci.com/gh/al3j4ndr1x/landing-su/tree/master.svg?style=svg)](https://circleci.com/gh/al3j4ndr1x/landing-su/tree/master)
 [![Coverage Status](https://coveralls.io/repos/github/al3j4ndr1x/landing-su/badge.svg?branch=master)](https://coveralls.io/github/al3j4ndr1x/landing-su?branch=master)
-# Landing SU
 
 This is the landing page with Angular 8, TDD, and CI/CD.
 
@@ -33,5 +34,3 @@ Run `npm run e2e` to execute the end-to-end tests via [Cypress](https://www.cypr
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
-
-
