@@ -272,6 +272,15 @@ $git commit --amend --no-edit
 
 Keep in mind: any changes you "undo" this way are really gone. They were never committed, so Git can't help us recover them later. Be sure you know what you're throwing away here! (Maybe use `git diff` to confirm).
 
+### delete a specific commit
+
+If the commit were not pushed to a remote server, you can use git rebase to modify the git history.
+You can do that:
+
+`git rebase -i commit-hash^`
+
+It will show a list of commits. The first line should be the commit you want to delete. Remove that line from the file you edited, save and close.
+
 ### Check GIT ignored files
 
 `git ls-files --others --ignored --exclude-standard`

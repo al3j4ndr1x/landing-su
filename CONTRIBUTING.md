@@ -2,10 +2,10 @@
 
 (Warning: this is still a work in progress!)
 
- - [Workflow](#workflow)
- - [Coding Rules](#rules)
- - [Branching](#branching) 
- - [Commit Guidelines](#commit)
+- [Workflow](#workflow)
+- [Coding Rules](#rules)
+- [Branching](#branching)
+- [Commit Guidelines](#commit)
 
 ## <a name="workflow"></a> Workflow
 
@@ -71,8 +71,8 @@ To ensure consistency throughout the source code, keep these rules in mind as yo
 
 The central repository holds two main branches with an infinite lifetime:
 
-* `master`
-* `develop`
+- `master`
+- `develop`
 
 We consider `origin/master` to be the main branch where the source code of HEAD always reflects a _production-ready_ state.
 
@@ -82,7 +82,7 @@ When the source code in the `develop` branch reaches a stable point and is ready
 
 Therefore, each time when changes are merged back into `master`, this is a new production release by definition.
 
-#### Switched to a new branch 'develop' 
+#### Switched to a new branch 'develop'
 
 ```bash
 git checkout -b develop master
@@ -91,49 +91,57 @@ git push origin develop
 
 ### Feature branches
 
-Feature branches (or sometimes called topic branches) are used to develop new features for the upcoming or a distant future release. 
+Feature branches (or sometimes called topic branches) are used to develop new features for the upcoming or a distant future release.
 
 The different types of branches we may use are:
 
-* `feature`
-* `issue`
-* `bug`
-* `experiment`
-* `docs`
+- `feature`
+- `issue`
+- `bug`
+- `experiment`
+- `docs`
 
 #### Working with a feature branch
+
 If the branch does not exist yet (check with the Lead), create the branch locally and then push to GitHub. A feature branch should always be 'publicly' available. That is, development should never exist in just one developer's local branch.
 
 - **Switched to a new branch 'docs-issue22'**
-  ```bash
-  git checkout -b docs-issue22 develop
-  ```
+
+```bash
+git checkout -b docs-issue22 develop
+```
+
 - **Makes the new feature remotely available**
-  ```bash
-  git push origin docs-issue22
-  ```
+
+```bash
+git push origin docs-issue22
+```
+
 - **Periodically, changes made to 'develop' (if any) should be merged back into your feature branch.**
-  ```bash
-  git merge develop
-  # or rebase
-  git checkout my-feature
-  git rebase develop
-  ```
+
+```bash
+git merge develop
+# or rebase
+git checkout my-feature
+git rebase develop
+```
+
 - **Incorporating a finished feature on develop**
 
-  Finished features may be merged into the `develop` branch to definitely add them to the upcoming release:
-  ```bash
-  git checkout develop
-  git rebase myfeature
-  # git merge --no-ff myfeature
-  git push origin develop
-  git branch --delete myfeature
-  git push origin --delete myfeature
-  ```
+Finished features may be merged into the `develop` branch to definitely add them to the upcoming release:
+
+```bash
+git checkout develop
+git rebase myfeature
+# git merge --no-ff myfeature
+git push origin develop
+git branch --delete myfeature
+git push origin --delete myfeature
+```
 
 ### Release branches
 
-Release branches support preparation of a new production release. 
+Release branches support preparation of a new production release.
 
 Release branches are created from the `develop` branch. The state of `develop` is ready for the "next release". We branch off and give the release branch a name reflecting the new version number:
 
@@ -141,7 +149,7 @@ The key moment to branch off a new release branch from `develop` is when `develo
 
 When the state of the release branch is ready to become a real release, some actions need to be carried out. First, the release branch is merged into master (since every commit on master is a new release by definition). Next, that commit on master must be tagged for easy future reference to this historical version. Finally, the changes made on the release branch need to be merged back into develop, so that future releases also contain these bug fixes.
 
-#### Creating a release branch 
+#### Creating a release branch
 
 Release branches are created from the develop branch. For example, say version 1.1.5 is the current production release and we have a big release coming up. The state of develop is ready for the “next release” and we have decided that this will become version 1.2 (rather than 1.1.6 or 2.0). So we branch off and give the release branch a name reflecting the new version number:
 
@@ -153,6 +161,7 @@ git commit -a
 After creating a new branch and switching to it, we bump the version number.
 
 #### Finishing a release branch
+
 When the state of the release branch is ready to become a real release, some actions need to be carried out. First, the release branch is merged into master (since every commit on master is a new release by definition, remember). Next, that commit on master must be tagged for easy future reference to this historical version. Finally, the changes made on the release branch need to be merged back into develop, so that future releases also contain these bug fixes.
 
 The first steps [*]:
@@ -162,6 +171,7 @@ git checkout master
 git merge --no-ff release-1.2
 git tag -a 1.2
 ```
+
 <sup>[*] Before merging with `--no-ff`, get new changes from remote `origin/master` and test branch.
 <br/>
 Note: You might as well want to use the `-s` or `-u <key>` flags to sign your tag cryptographically.</sup>
@@ -169,6 +179,7 @@ Note: You might as well want to use the `-s` or `-u <key>` flags to sign your ta
 The release is now done, and tagged for future reference.
 
 <sup>**Extra**: generalmente, es una buena idea limpiar el código (local) con una reorganización interactiva antes de enviar la pull request (public).</sup>
+
 ```bash
 # on the feature/bug/hotfix branch
 git fetch origin/master  #update the master
@@ -180,9 +191,9 @@ git rebase -i origin/master #rebase on top of the master to incorporate the last
 
 git checkout master                              
 git merge --no-ff (feature/bug/hotfix branch)    
-``` 
+```
 
-<sup>Siempre puedes realizar la reorganización en una rama temporal. De este modo, si accidentalmente echas por tierra el historial de tu rama de funcionalidades, puedes extraer la rama original y volver a intentarlo. Por ejemplo:</sup>
+>Siempre puedes realizar la reorganización en una rama temporal. De este modo, si accidentalmente echas por tierra el historial de tu rama de funcionalidades, puedes extraer la rama original y volver a intentarlo. Por ejemplo:
 
 ```bash
 git checkout myfeature
@@ -225,6 +236,7 @@ Then, fix the bug and commit the fix in one or more separate commits.
 ```bash
 git commit -m "Fixed severe production problem"
 ```
+
 #### Finishing a hotfix branch
 
 When finished, the bugfix needs to be merged back into master, but also needs to be merged back into develop, in order to safeguard that the bugfix is included in the next release as well. This is completely similar to how release branches are finished.
@@ -236,10 +248,12 @@ git checkout master
 git merge --no-ff hotfix-1.2.1
 git tag -a 1.2.1
 ```
+
 <sup>[*] Before merging with `--no-ff`, get new changes from remote `origin/master` and test branch.
 <br/>
 Note: You might as well want to use the `-s` or `-u <key>` flags to sign your tag cryptographically.
 </sup>
+
 ```bash
 # on the hotfix branch
 git fetch origin/master  #update the master
@@ -256,6 +270,7 @@ Next, include the hotfix in `develop`, too:
 git checkout develop
 git merge --no-ff hotfix-1.2.1
 ```
+
 Finally, remove the temporary branch:
 
 ```bash
@@ -268,7 +283,7 @@ git branch -d hotfix-1.2.1
 
 - Each commit should be a single **_logical change_**. Don't make several **_logical change_** in one commit. For example, if a patch fixes a bug and optimizes the performance of a feature, split it into two separate commits. 
 
-  _Tip: Use `git add -p` to interactively stage specific portions of the modified files_.
+_Tip: Use `git add -p` to interactively stage specific portions of the modified files_.
 
 - Don't split a single **_logical change_** into several commits. For example, the implementation of a feature and the corresponding tests should be in the same commit.
 
@@ -284,7 +299,7 @@ We have very precise rules over how our git commit messages can be formatted. Th
 
 Each commit message consists of a header, a body and a footer. The header has a special format that includes a type, a scope and a subject:
 
-```
+```text
 <type>(<scope>): <subject>
 <BLANK LINE>
 <body>
@@ -299,13 +314,14 @@ Any line of the commit message cannot be longer 100 characters! This allows the 
 The footer should contain a [closing reference to an issue](https://help.github.com/en/articles/closing-issues-using-keywords) if any.
 
 **_Note_**:
+
 - If a **_commit B_** depends on **_commit A_**, the dependency should be stated in the message of **_commit B_**. Use the SHA1 when referring to commits.
 
 - Similarly, if **_commit B_** solves a bug introduced by **_commit A_**, it should also be stated in the message of **_commit B_**.
 
 #### Revert
 
-If the commit reverts a previous commit, it should begin with `revert: `, followed by the header of the reverted commit. In the body it should say: `This reverts commit <hash>.`, where the hash is the SHA of the commit being reverted.
+If the commit reverts a previous commit, it should begin with `revert:`, followed by the header of the reverted commit. In the body it should say: `This reverts commit <hash>.`, where the hash is the SHA of the commit being reverted.
 
 #### Type
 
@@ -341,9 +357,9 @@ The following is the list of supported scopes:
 
 The subject contains a succinct description of the change:
 
-* use the imperative, present tense: "change" not "changed" nor "changes"
-* don't capitalize the first letter
-* no dot (.) at the end
+- use the imperative, present tense: "change" not "changed" nor "changes"
+- don't capitalize the first letter
+- no dot (.) at the end
 
 #### Body
 
@@ -358,23 +374,30 @@ Breaking Changes should start with the word `BREAKING CHANGE:` with a space or t
 ## Advanced Tips
 
 ### Git Log
-```
+
+```bash
 git log
 ```
+
 #### Decorating
+
 Many times it’s useful to know which branch or tag each commit is associated with. The `--decorate` flag makes `git log` display all of the references (e.g., branches, tags, etc) that point to each commit.
-```
+
+```bash
 git log --oneline --decorate
 ```
 
 #### Graphs
+
 The `--graph` option draws an ASCII graph representing the branch structure of the commit history. This is commonly used in conjunction with the `--oneline` and `--decorate` commands to make it easier to see which commit belongs to which branch:
-```
+
+```bash
 git log --graph --oneline --decorate
 ```
+
 For a simple repository with just 2 branches, this will produce the following:
 
-```
+```bash
 * 0e25143 (HEAD, master) Merge branch 'feature'
 |\
 | * 16b36c6 Fix a bug in the new feature
@@ -390,10 +413,11 @@ The asterisk shows which branch the commit was on, so the above graph tells us t
 While this is a nice option for simple repositories, you’re probably better off with a more full-featured visualization tool like `gitk`.
 
 #### The Shortlog
+
 The `git shortlog` command is a special version of `git log` intended for creating release announcements. It groups each commit by author and displays the first line of each commit message. This is an easy way to see who’s been working on what.
 
 ## References
 
 - [1] [branching strategy](https://nvie.com/posts/a-successful-git-branching-model/)
-- [2] https://github.com/agis/git-style-guide
-- [3] https://es.atlassian.com/git/tutorials/merging-vs-rebasing
+- [2] <https://github.com/agis/git-style-guide>
+- [3] <https://es.atlassian.com/git/tutorials/merging-vs-rebasing>
