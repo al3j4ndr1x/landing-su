@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.2.1](https://www.github.com/al3j4ndr1x/landing-su/compare/v0.2.0...v0.2.1) (2020-12-29)
+
+
+### Miscellaneous
+
+* change package name in release-please ([e9bcf7d](https://www.github.com/al3j4ndr1x/landing-su/commit/e9bcf7da3e36e5a459013937b7374419863ef851))
+
 ## [0.2.0](https://www.github.com/al3j4ndr1x/landing-su/compare/v0.1.3...v0.2.0) (2020-12-29)
 
 
