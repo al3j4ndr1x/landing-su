@@ -76,6 +76,7 @@ jobs: # a collection of steps
             echo '^^^That should look familiar^^^'
   test:
     executor: default
+    parallelism: 4
     steps:
       - attach_workspace:
           at: /home/circleci
@@ -102,6 +103,7 @@ jobs: # a collection of steps
 
   test_e2e:
     executor: default
+    parallelism: 4
     steps:
       - attach_workspace:
           at: /home/circleci
@@ -129,6 +131,7 @@ jobs: # a collection of steps
 
   test_e2e_staging:
     executor: default
+    parallelism: 4
     steps:
       - attach_workspace:
           at: /home/circleci
