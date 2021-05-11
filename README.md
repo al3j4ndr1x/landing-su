@@ -2,8 +2,9 @@
 
 [![CircleCI](https://circleci.com/gh/al3j4ndr1x/landing-su/tree/master.svg?style=svg)](https://circleci.com/gh/al3j4ndr1x/landing-su/tree/master)
 [![Coverage Status](https://coveralls.io/repos/github/al3j4ndr1x/landing-su/badge.svg?branch=master)](https://coveralls.io/github/al3j4ndr1x/landing-su?branch=master)
+[![Cypress.io](https://img.shields.io/badge/tested%20with-Cypress-04C38E.svg)](https://www.cypress.io/)
 
-This is the landing page with Angular 8, TDD, and CI/CD.
+This is the landing page with Angular 11, TDD, and CI/CD.
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.0.3.
 
