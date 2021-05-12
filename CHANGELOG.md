@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0](https://www.github.com/al3j4ndr1x/landing-su/compare/v0.2.1...v0.3.0) (2021-05-12)
+
+
+### Miscellaneous
+
+* release 0.3.0 ([d7410e6](https://www.github.com/al3j4ndr1x/landing-su/commit/d7410e6e057d33a57836bbf1bd0c0e3795d5ecca))
+
 ### [0.2.1](https://www.github.com/al3j4ndr1x/landing-su/compare/v0.2.0...v0.2.1) (2020-12-29)
 
 
