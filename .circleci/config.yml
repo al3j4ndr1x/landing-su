@@ -34,9 +34,9 @@ jobs: # a collection of steps
       - restore_cache: # special step to restore the dependency cache
           # Read about caching dependencies: https://circleci.com/docs/2.0/caching/
           keys:
-            - v3.6-node-dependencies-{{ .Branch }}-{{ checksum "package-lock.json" }}
-            - v3.6-node-dependencies-{{ .Branch }}
-            - v3.6-node-dependencies-
+            - v3.9-node-dependencies-{{ .Branch }}-{{ checksum "package-lock.json" }}
+            - v3.9-node-dependencies-{{ .Branch }}
+            - v3.9-node-dependencies-
 
       - run:
           name: Installing Dependencies
@@ -63,7 +63,7 @@ jobs: # a collection of steps
             #- .firebaserc
             - firestore.rules
             - firestore.indexes.json
-          key: v3.6-node-dependencies-{{ .Branch }}-{{ checksum "package-lock.json" }}
+          key: v3.9-node-dependencies-{{ .Branch }}-{{ checksum "package-lock.json" }}
 
       - persist_to_workspace:
           root: /home/circleci
@@ -76,6 +76,7 @@ jobs: # a collection of steps
             echo '^^^That should look familiar^^^'
   test:
     executor: default
+    parallelism: 1
     steps:
       - attach_workspace:
           at: /home/circleci
@@ -84,6 +85,12 @@ jobs: # a collection of steps
       #    name: Starting server before starting tests
       #    command: npm start # & wait-on http://localhost:4200
       #    background: true
+
+      # - run:
+      #     name: Split tests glob pattern
+      #     command: |
+      #       echo $(circleci tests glob "src/app/*.spec.ts" "src/app/auth/**/*.spec.ts" "src/app/**/*[!service].spec.ts")
+      #       circleci tests glob "src/app/*.spec.ts" "src/app/auth/**/*.spec.ts" "src/app/**/*[!service].spec.ts" | xargs -n 1 echo
       - run:
           name: Running Unit Tests with Jest and collect coverage reports to Coveralls
           command: npm run test:cov
@@ -102,6 +109,7 @@ jobs: # a collection of steps
 
   test_e2e:
     executor: default
+    parallelism: 1
     steps:
       - attach_workspace:
           at: /home/circleci
@@ -129,6 +137,7 @@ jobs: # a collection of steps
 
   test_e2e_staging:
     executor: default
+    parallelism: 1
     steps:
       - attach_workspace:
           at: /home/circleci
