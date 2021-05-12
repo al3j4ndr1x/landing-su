@@ -174,11 +174,11 @@ jobs: # a collection of steps
           name: Show current branch
           command: echo ${CIRCLE_BRANCH}
       - run:
-          name: Building master to staging
+          name: Building branch to staging
           command: npm run build:staging
 
       - run:
-          name: Deploying master to Firebase staging hosting
+          name: Deploying branch to Firebase staging hosting
           command: |
             ./node_modules/.bin/firebase deploy -m "Staging deployed with CircleCI." \
             --only hosting \
@@ -195,11 +195,11 @@ jobs: # a collection of steps
           name: Show current branch
           command: echo ${CIRCLE_BRANCH}
       - run:
-          name: Building Master to production
+          name: Building main to production
           command: npm run build:prod
 
       - run:
-          name: Deploying Master to Firebase
+          name: Deploying main to Firebase
           command: |
             ./node_modules/.bin/firebase deploy -m "Deployed with CircleCI." \
             --only hosting \
@@ -215,7 +215,7 @@ workflows:
           filters:
             branches:
               only:
-                - master
+                - main
                 - develop
                 - /release-.*/
                 - /feature-.*/
@@ -262,4 +262,4 @@ workflows:
           filters:  # using regex filters requires the entire branch to match
             branches:
               only:  # only branches matching the below regex filters will run
-                - master
+                - main
