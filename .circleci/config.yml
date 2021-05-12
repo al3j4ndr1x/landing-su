@@ -142,10 +142,10 @@ jobs: # a collection of steps
       - attach_workspace:
           at: /home/circleci
       # runs Cypress test in load balancing (parallel) mode
-      # and groups them in Cypress Dashboard under name "test_e2e_staging"
+      # and groups them in Cypress Dashboard under name "electron-3x"
       - run:
-          name: Running End-to-End Tests and recording with Cypress in Staging mode
-          command: npm run e2e:ci:staging -- --parallel --group $CIRCLE_JOB
+          name: Running End-to-End Tests and recording with Cypress in Staging mode 🧪
+          command: npm run e2e:ci:staging
 
       - store_test_results:
           path: e2e-results
