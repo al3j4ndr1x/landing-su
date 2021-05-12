@@ -137,15 +137,22 @@ jobs: # a collection of steps
 
   test_e2e_staging:
     executor: default
-    parallelism: 1
+    parallelism: 3
     steps:
       - attach_workspace:
           at: /home/circleci
-
+      # runs Cypress test in load balancing (parallel) mode
+      # and groups them in Cypress Dashboard under name "test_e2e_staging"
       - run:
-          name: Running End-to-End Tests and recording with Cypress in Staging
-          command: npm run e2e:ci:staging
+          name: Running End-to-End Tests and recording with Cypress in Staging mode
+          command: npm run e2e:ci:staging -- --parallel --group $CIRCLE_JOB
 
+      - store_test_results:
+          path: e2e-results
+      - store_artifacts:
+          path: cypress/videos
+      - store_artifacts:
+          path: cypress/screenshots
       # - store_test_results:
       #     path: ./cypress-coverage
       # - store_artifacts:
