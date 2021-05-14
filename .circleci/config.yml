@@ -33,9 +33,9 @@ jobs: # a collection of steps
 
       - restore_cache: # special step to restore the dependency cache
           keys:
-            - v4-node-dependencies-{{ .Branch }}-{{ checksum "package-lock.json" }}
-            - v4-node-dependencies-{{ .Branch }}
-            - v4-node-dependencies-
+            - v4.1-node-dependencies-{{ .Branch }}-{{ checksum "package-lock.json" }}
+            - v4.1-node-dependencies-{{ .Branch }}
+            - v4.1-node-dependencies-
 
       - run:
           name: Installing Dependencies 📦
@@ -52,7 +52,7 @@ jobs: # a collection of steps
       - save_cache: # special step to save the dependency cache
           # cache NPM modules and the folder with the Cypress binary
           paths:
-            #- node_modules
+            - ./node_modules
             - functions/node_modules
             - ~/.npm
             - ~/.cache
@@ -62,7 +62,7 @@ jobs: # a collection of steps
             #- .firebaserc
             #- firestore.rules
             #- firestore.indexes.json
-          key: v4-node-dependencies-{{ .Branch }}-{{ checksum "package-lock.json" }}
+          key: v4.1-node-dependencies-{{ .Branch }}-{{ checksum "package-lock.json" }}
 
       - persist_to_workspace:
           root: /home/circleci
