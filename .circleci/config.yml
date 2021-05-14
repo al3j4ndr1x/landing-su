@@ -15,7 +15,7 @@ jobs: # a collection of steps
     steps: # a collection of executable commands
       - checkout # special step to check out source code to working directory
       - run:
-          name: Code Has Arrived
+          name: Code Has Arrived ✨
           command: |
             ls -al
             echo 'The working directory after check out source code'
@@ -38,7 +38,7 @@ jobs: # a collection of steps
             - v4-node-dependencies-
 
       - run:
-          name: Installing Dependencies
+          name: Installing Dependencies 📦
           command: npm ci
 
       # - run:
@@ -46,7 +46,7 @@ jobs: # a collection of steps
       #     command: cd functions && npm ci
 
       - run:
-          name: Verifying Cypress
+          name: Verifying Cypress 🌲
           command: npm run cy:verify
 
       - save_cache: # special step to save the dependency cache
@@ -91,7 +91,7 @@ jobs: # a collection of steps
       #       echo $(circleci tests glob "src/app/*.spec.ts" "src/app/auth/**/*.spec.ts" "src/app/**/*[!service].spec.ts")
       #       circleci tests glob "src/app/*.spec.ts" "src/app/auth/**/*.spec.ts" "src/app/**/*[!service].spec.ts" | xargs -n 1 echo
       - run:
-          name: Running Unit Tests with Jest and collecting coverage reports for Coveralls
+          name: Running Unit Tests with Jest and collecting coverage reports for Coveralls 🧪
           command: npm run test:cov
 
       - store_test_results:
@@ -113,7 +113,7 @@ jobs: # a collection of steps
       - attach_workspace:
           at: /home/circleci
       - run:
-          name: Running End-to-End Tests and recording with Cypress
+          name: Running End-to-End Tests and recording with Cypress 🧪
           command: npm run e2e:ci
 
       # - store_test_results:
@@ -124,9 +124,9 @@ jobs: # a collection of steps
       # # print code coverage summary to the terminal
       # - run: npm run cov:report
 
-      - persist_to_workspace:
-          root: /home/circleci
-          paths: .
+      # - persist_to_workspace:
+      #     root: /home/circleci
+      #     paths: .
 
       - run:
           name: Finally the working directory after e2e test steps
@@ -160,12 +160,12 @@ jobs: # a collection of steps
       # # print code coverage summary to the terminal
       # - run: npm run cov:report
 
-      - persist_to_workspace:
-          root: /home/circleci
-          paths: .
+      # - persist_to_workspace:
+      #     root: /home/circleci
+      #     paths: .
 
       - run:
-          name: Finally the working directory after e2e test step in Staging
+          name: Finally the working directory after e2e test step in Staging mode
           command: |
             ls -al
             echo 'The working directory after e2e test step'
@@ -184,7 +184,7 @@ jobs: # a collection of steps
           command: npm run build:staging
 
       - run:
-          name: Deploying branch to Firebase staging hosting
+          name: Deploying branch to Firebase staging hosting 🎉
           command: |
             ./node_modules/.bin/firebase deploy -m "Staging deployed with CircleCI." \
             --only hosting \
@@ -205,7 +205,7 @@ jobs: # a collection of steps
           command: npm run build:prod
 
       - run:
-          name: Deploying main to Firebase
+          name: Deploying main to Firebase 🚀
           command: |
             ./node_modules/.bin/firebase deploy -m "Deployed with CircleCI." \
             --only hosting \
