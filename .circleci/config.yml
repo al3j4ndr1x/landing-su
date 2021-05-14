@@ -1,4 +1,4 @@
-# Use the latest 2.1 version of CircleCI pipeline processing engine, see https://circleci.com/docs/2.0/configuration-reference/
+# Use the latest 2.1 version of CircleCI pipeline processing engine
 version: 2.1 # use CircleCI 2.1
 
 executors:
@@ -18,7 +18,7 @@ jobs: # a collection of steps
           name: Code Has Arrived
           command: |
             ls -al
-            echo '^^^That should look familiar^^^'
+            echo 'The working directory after check out source code'
       - run:
           name: Running in a Unique Container
           command: |
@@ -72,7 +72,7 @@ jobs: # a collection of steps
           name: Finally the working directory after build steps
           command: |
             ls -al
-            echo '^^^That should look familiar^^^'
+            echo 'The working directory after build steps'
   test:
     executor: default
     parallelism: 1
@@ -91,7 +91,7 @@ jobs: # a collection of steps
       #       echo $(circleci tests glob "src/app/*.spec.ts" "src/app/auth/**/*.spec.ts" "src/app/**/*[!service].spec.ts")
       #       circleci tests glob "src/app/*.spec.ts" "src/app/auth/**/*.spec.ts" "src/app/**/*[!service].spec.ts" | xargs -n 1 echo
       - run:
-          name: Running Unit Tests with Jest and collect coverage reports to Coveralls
+          name: Running Unit Tests with Jest and collecting coverage reports for Coveralls
           command: npm run test:cov
 
       - store_test_results:
@@ -101,10 +101,10 @@ jobs: # a collection of steps
           destination: coverage
 
       - run:
-          name: Finally the working directory after test steps
+          name: Finally the working directory after unit tests steps
           command: |
             ls -al
-            echo '^^^That should look familiar^^^'
+            echo 'The working directory after unit tests'
 
   test_e2e:
     executor: default
@@ -132,7 +132,7 @@ jobs: # a collection of steps
           name: Finally the working directory after e2e test steps
           command: |
             ls -al
-            echo '^^^That should look familiar^^^'
+            echo 'The working directory after e2e test'
 
   test_e2e_staging:
     executor: default
@@ -146,8 +146,8 @@ jobs: # a collection of steps
           name: Running End-to-End Tests and recording with Cypress in Staging mode 🧪
           command: npm run e2e:ci:staging
 
-      - store_test_results:
-          path: e2e-results
+      #- store_test_results:
+      #    path: e2e-results
       - store_artifacts:
           path: cypress/videos
       - store_artifacts:
@@ -168,7 +168,7 @@ jobs: # a collection of steps
           name: Finally the working directory after e2e test step in Staging
           command: |
             ls -al
-            echo '^^^That should look familiar^^^'
+            echo 'The working directory after e2e test step'
 
   deploy_staging:
     executor: default
