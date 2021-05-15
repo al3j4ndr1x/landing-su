@@ -88,6 +88,7 @@ firestore-debug.log
 #firestore.rules
 #firestore.indexes.json
 **/.firebaserc
+/functions
 
 ### Firebase Patch ###
 .runtimeconfig.json

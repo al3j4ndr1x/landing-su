@@ -1,4 +1,4 @@
-# Use the latest 2.1 version of CircleCI pipeline processing engine, see https://circleci.com/docs/2.0/configuration-reference/
+# Use the latest 2.1 version of CircleCI pipeline processing engine
 version: 2.1 # use CircleCI 2.1
 
 executors:
@@ -15,10 +15,10 @@ jobs: # a collection of steps
     steps: # a collection of executable commands
       - checkout # special step to check out source code to working directory
       - run:
-          name: Code Has Arrived
+          name: Code Has Arrived ✨
           command: |
             ls -al
-            echo '^^^That should look familiar^^^'
+            echo 'The working directory after check out source code'
       - run:
           name: Running in a Unique Container
           command: |
@@ -32,14 +32,13 @@ jobs: # a collection of steps
           command: bash ./deploy_config.sh
 
       - restore_cache: # special step to restore the dependency cache
-          # Read about caching dependencies: https://circleci.com/docs/2.0/caching/
           keys:
-            - v3.9-node-dependencies-{{ .Branch }}-{{ checksum "package-lock.json" }}
-            - v3.9-node-dependencies-{{ .Branch }}
-            - v3.9-node-dependencies-
+            - v5.1-node-dependencies-{{ .Branch }}-{{ checksum "package-lock.json" }}
+            - v5.1-node-dependencies-{{ .Branch }}
+            - v5.1-node-dependencies-
 
       - run:
-          name: Installing Dependencies
+          name: Installing Dependencies 📦
           command: npm ci
 
       # - run:
@@ -47,23 +46,23 @@ jobs: # a collection of steps
       #     command: cd functions && npm ci
 
       - run:
-          name: Verifying Cypress
+          name: Verifying Cypress 🌲
           command: npm run cy:verify
 
       - save_cache: # special step to save the dependency cache
           # cache NPM modules and the folder with the Cypress binary
           paths:
-            #- node_modules
-            - functions/node_modules
+            - ./node_modules
+            #- functions/node_modules
             - ~/.npm
             - ~/.cache
-            - package-lock.json
-            - package.json
-            - firebase.json
+            #- package-lock.json
+            #- package.json
+            #- firebase.json
             #- .firebaserc
-            - firestore.rules
-            - firestore.indexes.json
-          key: v3.9-node-dependencies-{{ .Branch }}-{{ checksum "package-lock.json" }}
+            #- firestore.rules
+            #- firestore.indexes.json
+          key: v5.1-node-dependencies-{{ .Branch }}-{{ checksum "package-lock.json" }}
 
       - persist_to_workspace:
           root: /home/circleci
@@ -73,7 +72,7 @@ jobs: # a collection of steps
           name: Finally the working directory after build steps
           command: |
             ls -al
-            echo '^^^That should look familiar^^^'
+            echo 'The working directory after build steps'
   test:
     executor: default
     parallelism: 1
@@ -92,7 +91,7 @@ jobs: # a collection of steps
       #       echo $(circleci tests glob "src/app/*.spec.ts" "src/app/auth/**/*.spec.ts" "src/app/**/*[!service].spec.ts")
       #       circleci tests glob "src/app/*.spec.ts" "src/app/auth/**/*.spec.ts" "src/app/**/*[!service].spec.ts" | xargs -n 1 echo
       - run:
-          name: Running Unit Tests with Jest and collect coverage reports to Coveralls
+          name: Running Unit Tests with Jest and collecting coverage reports for Coveralls 🧪
           command: npm run test:cov
 
       - store_test_results:
@@ -102,10 +101,10 @@ jobs: # a collection of steps
           destination: coverage
 
       - run:
-          name: Finally the working directory after test steps
+          name: Finally the working directory after unit tests steps
           command: |
             ls -al
-            echo '^^^That should look familiar^^^'
+            echo 'The working directory after unit tests'
 
   test_e2e:
     executor: default
@@ -114,7 +113,7 @@ jobs: # a collection of steps
       - attach_workspace:
           at: /home/circleci
       - run:
-          name: Running End-to-End Tests and recording with Cypress
+          name: Running End-to-End Tests and recording with Cypress 🧪
           command: npm run e2e:ci
 
       # - store_test_results:
@@ -125,27 +124,34 @@ jobs: # a collection of steps
       # # print code coverage summary to the terminal
       # - run: npm run cov:report
 
-      - persist_to_workspace:
-          root: /home/circleci
-          paths: .
+      # - persist_to_workspace:
+      #     root: /home/circleci
+      #     paths: .
 
       - run:
           name: Finally the working directory after e2e test steps
           command: |
             ls -al
-            echo '^^^That should look familiar^^^'
+            echo 'The working directory after e2e test'
 
   test_e2e_staging:
     executor: default
-    parallelism: 1
+    parallelism: 3
     steps:
       - attach_workspace:
           at: /home/circleci
-
+      # runs Cypress test in load balancing (parallel) mode
+      # and groups them in Cypress Dashboard under name "electron-3x"
       - run:
-          name: Running End-to-End Tests and recording with Cypress in Staging
+          name: Running End-to-End Tests and recording with Cypress in Staging mode 🧪
           command: npm run e2e:ci:staging
 
+      #- store_test_results:
+      #    path: e2e-results
+      - store_artifacts:
+          path: cypress/videos
+      - store_artifacts:
+          path: cypress/screenshots
       # - store_test_results:
       #     path: ./cypress-coverage
       # - store_artifacts:
@@ -154,15 +160,15 @@ jobs: # a collection of steps
       # # print code coverage summary to the terminal
       # - run: npm run cov:report
 
-      - persist_to_workspace:
-          root: /home/circleci
-          paths: .
+      # - persist_to_workspace:
+      #     root: /home/circleci
+      #     paths: .
 
       - run:
-          name: Finally the working directory after e2e test step in Staging
+          name: Finally the working directory after e2e test step in Staging mode
           command: |
             ls -al
-            echo '^^^That should look familiar^^^'
+            echo 'The working directory after e2e test step'
 
   deploy_staging:
     executor: default
@@ -178,7 +184,7 @@ jobs: # a collection of steps
           command: npm run build:staging
 
       - run:
-          name: Deploying branch to Firebase staging hosting
+          name: Deploying branch to Firebase staging hosting 🎉
           command: |
             ./node_modules/.bin/firebase deploy -m "Staging deployed with CircleCI." \
             --only hosting \
@@ -199,7 +205,7 @@ jobs: # a collection of steps
           command: npm run build:prod
 
       - run:
-          name: Deploying main to Firebase
+          name: Deploying main to Firebase 🚀
           command: |
             ./node_modules/.bin/firebase deploy -m "Deployed with CircleCI." \
             --only hosting \

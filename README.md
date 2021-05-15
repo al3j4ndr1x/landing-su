@@ -1,7 +1,7 @@
 # Landing SU v0.2.x
 
-[![CircleCI](https://circleci.com/gh/al3j4ndr1x/landing-su/tree/master.svg?style=svg)](https://circleci.com/gh/al3j4ndr1x/landing-su/tree/master)
-[![Coverage Status](https://coveralls.io/repos/github/al3j4ndr1x/landing-su/badge.svg?branch=master)](https://coveralls.io/github/al3j4ndr1x/landing-su?branch=master)
+[![CircleCI](https://circleci.com/gh/al3j4ndr1x/landing-su/tree/main.svg?style=svg)](https://circleci.com/gh/al3j4ndr1x/landing-su/tree/main)
+[![Coverage Status](https://coveralls.io/repos/github/al3j4ndr1x/landing-su/badge.svg?branch=main)](https://coveralls.io/github/al3j4ndr1x/landing-su?branch=main)
 [![Cypress.io](https://img.shields.io/badge/tested%20with-Cypress-04C38E.svg)](https://www.cypress.io/)
 
 This is the landing page with Angular 11, TDD, and CI/CD.
