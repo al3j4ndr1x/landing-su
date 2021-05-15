@@ -33,9 +33,9 @@ jobs: # a collection of steps
 
       - restore_cache: # special step to restore the dependency cache
           keys:
-            - v4.1-node-dependencies-{{ .Branch }}-{{ checksum "package-lock.json" }}
-            - v4.1-node-dependencies-{{ .Branch }}
-            - v4.1-node-dependencies-
+            - v5-node-dependencies-{{ .Branch }}-{{ checksum "package-lock.json" }}
+            - v5-node-dependencies-{{ .Branch }}
+            - v5-node-dependencies-
 
       - run:
           name: Installing Dependencies 📦
@@ -62,7 +62,7 @@ jobs: # a collection of steps
             #- .firebaserc
             #- firestore.rules
             #- firestore.indexes.json
-          key: v4.1-node-dependencies-{{ .Branch }}-{{ checksum "package-lock.json" }}
+          key: v5-node-dependencies-{{ .Branch }}-{{ checksum "package-lock.json" }}
 
       - persist_to_workspace:
           root: /home/circleci
