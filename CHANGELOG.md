@@ -1,5 +1,14 @@
 # Changelog
 
+### [0.3.1](https://www.github.com/al3j4ndr1x/landing-su/compare/v0.3.0...v0.3.1) (2021-05-15)
+
+
+### Miscellaneous
+
+* remove functions ([916c8d7](https://www.github.com/al3j4ndr1x/landing-su/commit/916c8d74d9e5b3638a78969cdd2dd2c568d35033))
+* rename branch name in readme and bump new version in index ([f2bb312](https://www.github.com/al3j4ndr1x/landing-su/commit/f2bb312a897aa0016ac22512c99a72e0aab69b61))
+* update gitignore ([ac52aef](https://www.github.com/al3j4ndr1x/landing-su/commit/ac52aef21dfa1492a1ee805f99b4f5666ca0a1f1))
+
 ## [0.3.0](https://www.github.com/al3j4ndr1x/landing-su/compare/v0.2.1...v0.3.0) (2021-05-12)
 
 
