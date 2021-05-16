@@ -1,4 +1,4 @@
-# Landing SU v0.2.x
+# Landing SU
 
 [![CircleCI](https://circleci.com/gh/al3j4ndr1x/landing-su/tree/main.svg?style=svg)](https://circleci.com/gh/al3j4ndr1x/landing-su/tree/main)
 [![Coverage Status](https://coveralls.io/repos/github/al3j4ndr1x/landing-su/badge.svg?branch=main)](https://coveralls.io/github/al3j4ndr1x/landing-su?branch=main)

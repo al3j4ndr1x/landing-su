@@ -5,7 +5,7 @@ executors:
   default:
     working_directory: ~/repo
     docker: # run the steps with Docker
-      - image: circleci/node:14-browsers
+      - image: circleci/node:15-browsers
         environment:
           ## this enables colors in the output
           TERM: xterm
@@ -33,9 +33,9 @@ jobs: # a collection of steps
 
       - restore_cache: # special step to restore the dependency cache
           keys:
-            - v5.1-node-dependencies-{{ .Branch }}-{{ checksum "package-lock.json" }}
-            - v5.1-node-dependencies-{{ .Branch }}
-            - v5.1-node-dependencies-
+            - v5.2-node-dependencies-{{ .Branch }}-{{ checksum "package-lock.json" }}
+            - v5.2-node-dependencies-{{ .Branch }}
+            - v5.2-node-dependencies-
 
       - run:
           name: Installing Dependencies 📦
@@ -62,7 +62,7 @@ jobs: # a collection of steps
             #- .firebaserc
             #- firestore.rules
             #- firestore.indexes.json
-          key: v5.1-node-dependencies-{{ .Branch }}-{{ checksum "package-lock.json" }}
+          key: v5.2-node-dependencies-{{ .Branch }}-{{ checksum "package-lock.json" }}
 
       - persist_to_workspace:
           root: /home/circleci
@@ -229,6 +229,8 @@ workflows:
                 - /bugfix-.*/
                 - /hotfix-.*/
                 - /docs-.*/
+                - /chore-.*/
+                - /perf-.*/
                 - /experiment-.*/
 
       - test:
@@ -247,6 +249,8 @@ workflows:
                 - /bugfix-.*/
                 - /hotfix-.*/
                 - /docs-.*/
+                - /chore-.*/
+                - /perf-.*/
                 - /experiment-.*/
       # - test_e2e:
       #     requires:
