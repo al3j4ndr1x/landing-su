@@ -279,11 +279,11 @@ workflows:
           requires: # We only run the "hold" job when test has succeeded
             - test
           filters:  # using regex filters requires the entire branch to match
+            branches:
+              ignore: /.*/
             tags:
               only: /^v.*/
-            branches:
-              only:  # only branches matching the below regex filters will run
-                - main
+
       # - deploy_production:
       #     requires:
       #       - test #_e2e
