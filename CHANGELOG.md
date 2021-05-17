@@ -1,5 +1,15 @@
 # Changelog
 
+### [0.3.2](https://www.github.com/al3j4ndr1x/landing-su/compare/v0.3.1...v0.3.2) (2021-05-17)
+
+
+### Miscellaneous
+
+* fix release-please action ([60cffef](https://www.github.com/al3j4ndr1x/landing-su/commit/60cffefb27f478db65feb47708f7ea34f3db3726))
+* remove input from release-please action ([25f645c](https://www.github.com/al3j4ndr1x/landing-su/commit/25f645c60214fa5811343dcfa7a0726096d8b044))
+* update action add bump minor pre major ([e805ec1](https://www.github.com/al3j4ndr1x/landing-su/commit/e805ec1989156789bc2e488956f593b853ba1178))
+* update readme and ci config and migrate husky to v6 ([dfb89f6](https://www.github.com/al3j4ndr1x/landing-su/commit/dfb89f65ba435c1407dd877da647f62bc6578041))
+
 ### [0.3.1](https://www.github.com/al3j4ndr1x/landing-su/compare/v0.3.0...v0.3.1) (2021-05-15)
 
 
