@@ -212,7 +212,7 @@ jobs: # a collection of steps
             --project $FIREBASE_PROJECT_ALIAS \
             --token=$FIREBASE_DEPLOY_TOKEN
 
-# Orchestrate or schedule a set of jobs, see https://circleci.com/docs/2.0/workflows/
+# Orchestrate or schedule a set of jobs
 workflows:
   version: 2
   build_test_and_deploy:
@@ -232,16 +232,21 @@ workflows:
                 - /chore-.*/
                 - /perf-.*/
                 - /experiment-.*/
-
+            tags:
+              only: /^v.*/
       - test:
           requires:
             - build
+          filters:
+            tags:
+              only: /^v.*/
       - test_e2e_staging:
           requires:
             - test
           filters:
             branches:
               only:
+                #- main
                 - develop
                 - /release-.*/
                 - /feature-.*/
@@ -252,13 +257,15 @@ workflows:
                 - /chore-.*/
                 - /perf-.*/
                 - /experiment-.*/
+
       # - test_e2e:
       #     requires:
       #       - test
       #     filters:
       #       branches:
       #         only:
-      #           - master
+      #           - main
+
       - deploy_staging:
           requires:
             - test_e2e_staging
@@ -266,10 +273,26 @@ workflows:
             branches:
               only:
                 - /release-.*/
-      - deploy_production:
-          requires:
-            - test #_e2e
+
+      - hold: # A job that will require manual approval in the CircleCI web application.
+          type: approval # This key-value pair will set my workflow to a status of "On Hold"
+          requires: # We only run the "hold" job when test has succeeded
+            - test
           filters:  # using regex filters requires the entire branch to match
+            tags:
+              only: /^v.*/
             branches:
               only:  # only branches matching the below regex filters will run
                 - main
+      # - deploy_production:
+      #     requires:
+      #       - test #_e2e
+      #     filters:  # using regex filters requires the entire branch to match
+      #       branches:
+      #         only:  # only branches matching the below regex filters will run
+      #           - main
+      # On approval of the `hold` job, any successive job that requires the `hold` job will run.
+      # In this case, a user is manually triggering the deploy job.
+      - deploy_production:
+          requires:
+            - hold
