@@ -20,7 +20,7 @@
   "jest-junit": {
     "output": "./test-results/junit/jest-junit.xml"
   },
-  "version": "0.3.2",
+  "version": "0.3.3",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
