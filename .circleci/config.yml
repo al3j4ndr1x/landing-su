@@ -10,40 +10,55 @@ executors:
           ## this enables colors in the output
           TERM: xterm
 jobs: # a collection of steps
-  build: # runs not using Workflows must have a `build` job as entry point
+  prepare:
     executor: default
     steps: # a collection of executable commands
-      - checkout # special step to check out source code to working directory
-      - run:
-          name: Code Has Arrived ✨
-          command: |
-            ls -al
-            echo 'The working directory after check out source code'
       - run:
           name: Running in a Unique Container
           command: |
             node -v
-      - run:
-          name: Updating npm at latest
-          command: 'sudo npm install -g npm@latest'
+            npm -v
+      # - run:
+      #     name: Updating npm at latest
+      #     command: |
+      #       'sudo npm install -g npm@latest'
+      #       npm -v
 
+  build: # runs not using Workflows must have a `build` job as entry point
+    executor: default
+    steps:
+      - restore_cache:
+          keys:
+            - source-v1-{{ .Branch }}-{{ .Revision }}
+            - source-v1-{{ .Branch }}-
+            - source-v1-
+
+      - checkout # special step to check out source code to working directory
+
+      - run:
+          name: Source Code has arrived ✨
+          command: |
+            ls -al
+            echo 'The working directory after check out source code'
       - run:
           name: Loading environment variables
           command: bash ./deploy_config.sh
+      - run:
+          name: Running git garbage collection
+          command: git gc
+      - save_cache:
+          key: source-v1-{{ .Branch }}-{{ .Revision }}
+          paths:
+            - ".git"
 
       - restore_cache: # special step to restore the dependency cache
           keys:
-            - v5.2-node-dependencies-{{ .Branch }}-{{ checksum "package-lock.json" }}
-            - v5.2-node-dependencies-{{ .Branch }}
-            - v5.2-node-dependencies-
-
+            - v6.1-node-dependencies-{{ .Branch }}-{{ checksum "package-lock.json" }}
+            - v6.1-node-dependencies-{{ .Branch }}
+            - v6.1-node-dependencies-
       - run:
           name: Installing Dependencies 📦
           command: npm ci
-
-      # - run:
-      #     name: Installing Google Cloud Functions Dependencies
-      #     command: cd functions && npm ci
 
       - run:
           name: Verifying Cypress 🌲
@@ -52,17 +67,11 @@ jobs: # a collection of steps
       - save_cache: # special step to save the dependency cache
           # cache NPM modules and the folder with the Cypress binary
           paths:
-            - ./node_modules
+            - node_modules
             #- functions/node_modules
-            - ~/.npm
-            - ~/.cache
-            #- package-lock.json
-            #- package.json
-            #- firebase.json
-            #- .firebaserc
-            #- firestore.rules
-            #- firestore.indexes.json
-          key: v5.2-node-dependencies-{{ .Branch }}-{{ checksum "package-lock.json" }}
+            #- ~/.npm
+            #- ~/.cache
+          key: v6.1-node-dependencies-{{ .Branch }}-{{ checksum "package-lock.json" }}
 
       - persist_to_workspace:
           root: /home/circleci
@@ -148,10 +157,10 @@ jobs: # a collection of steps
 
       #- store_test_results:
       #    path: e2e-results
-      - store_artifacts:
-          path: cypress/videos
-      - store_artifacts:
-          path: cypress/screenshots
+      # - store_artifacts:
+      #     path: cypress/videos
+      # - store_artifacts:
+      #     path: cypress/screenshots
       # - store_test_results:
       #     path: ./cypress-coverage
       # - store_artifacts:
@@ -215,84 +224,99 @@ jobs: # a collection of steps
 # Orchestrate or schedule a set of jobs
 workflows:
   version: 2
-  build_test_and_deploy:
+  build_test: # This workflow will run on 'main' and will not run on tags
     jobs:
-      - build:
-          filters:
+      - prepare:
+          filters: &filters-pre-prod
             branches:
               only:
                 - main
-                - develop
                 - /release-.*/
-                - /feature-.*/
-                - /issue-.*/
-                - /bugfix-.*/
-                - /hotfix-.*/
                 - /docs-.*/
-                - /chore-.*/
-                - /perf-.*/
-                - /experiment-.*/
             tags:
-              only: /^v.*/
+              ignore: /.*/
+      - build:
+          requires:
+            - prepare
+          filters:
+            <<: *filters-pre-prod
       - test:
           requires:
             - build
           filters:
-            tags:
-              only: /^v.*/
-      - test_e2e_staging:
-          requires:
-            - test
-          filters:
+            <<: *filters-pre-prod
+
+  staging: # This workflow will only run on 'dev' and will not run on tags
+    jobs:
+      - prepare:
+          filters: &filters-staging # this yaml anchor is setting these values to "filters-staging"
             branches:
               only:
-                #- main
                 - develop
-                - /release-.*/
+                - next
                 - /feature-.*/
                 - /issue-.*/
                 - /bugfix-.*/
                 - /hotfix-.*/
-                - /docs-.*/
                 - /chore-.*/
                 - /perf-.*/
                 - /experiment-.*/
-
-      # - test_e2e:
-      #     requires:
-      #       - test
-      #     filters:
-      #       branches:
-      #         only:
-      #           - main
-
+            tags:
+              ignore: /.*/
+      - build:
+          requires:
+            - prepare
+          filters:
+            <<: *filters-staging # this is calling the previously set yaml anchor
+      - test:
+          requires:
+            - build
+          filters:
+            <<: *filters-staging
+      - test_e2e_staging:
+          requires:
+            - test
+          filters:
+            <<: *filters-staging
       - deploy_staging:
           requires:
             - test_e2e_staging
           filters:
             branches:
               only:
-                - /release-.*/
+                - develop
+            tags:
+              ignore: /.*/
 
+  production: # This workflow will only run on tags (specifically starting with 'v.') and will not run on branches
+    jobs:
+      - prepare:
+          filters: &filters-production # this yaml anchor is setting these values to "filters-production"
+            branches:
+              ignore:
+                - /.*/
+            tags:
+              only: /^v.*/
+      - build:
+          requires:
+            - prepare
+          filters:
+            <<: *filters-production
+      - test:
+          requires:
+            - build
+          filters:
+            <<: *filters-production
       - hold: # A job that will require manual approval in the CircleCI web application.
           type: approval # This key-value pair will set my workflow to a status of "On Hold"
           requires: # We only run the "hold" job when test has succeeded
             - test
-          filters:  # using regex filters requires the entire branch to match
-            branches:
-              ignore: /.*/
-            tags:
-              only: /^v.*/
-
-      # - deploy_production:
-      #     requires:
-      #       - test #_e2e
-      #     filters:  # using regex filters requires the entire branch to match
-      #       branches:
-      #         only:  # only branches matching the below regex filters will run
-      #           - main
+          filters:
+            <<: *filters-production # this is calling the previously set yaml anchor
       # On approval of the `hold` job, any successive job that requires the `hold` job will run.
       # In this case, a user is manually triggering the deploy job.
       - deploy_production:
           requires:
             - hold
+          filters:
+            <<: *filters-production # this is calling the previously set yaml anchor
