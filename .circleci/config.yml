@@ -274,6 +274,8 @@ workflows:
           filters:
             <<: *filters-staging
       - test_e2e_staging:
+          requires:
+            - test
           filters:
             <<: *filters-staging
       - deploy_staging:
