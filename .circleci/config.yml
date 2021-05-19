@@ -53,9 +53,9 @@ jobs: # a collection of steps
 
       - restore_cache: # special step to restore the dependency cache
           keys:
-            - v6-node-dependencies-{{ .Branch }}-{{ checksum "package-lock.json" }}
-            - v6-node-dependencies-{{ .Branch }}
-            - v6-node-dependencies-
+            - v6.1-node-dependencies-{{ .Branch }}-{{ checksum "package-lock.json" }}
+            - v6.1-node-dependencies-{{ .Branch }}
+            - v6.1-node-dependencies-
       - run:
           name: Installing Dependencies 📦
           command: npm ci
@@ -69,9 +69,9 @@ jobs: # a collection of steps
           paths:
             - node_modules
             #- functions/node_modules
-            - ~/.npm
-            - ~/.cache
-          key: v6-node-dependencies-{{ .Branch }}-{{ checksum "package-lock.json" }}
+            #- ~/.npm
+            #- ~/.cache
+          key: v6.1-node-dependencies-{{ .Branch }}-{{ checksum "package-lock.json" }}
 
       - persist_to_workspace:
           root: /home/circleci
