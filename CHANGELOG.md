@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.3.4](https://www.github.com/al3j4ndr1x/landing-su/compare/v0.3.3...v0.3.4) (2021-05-19)
+
+
+### Miscellaneous
+
+* update workflows circleci config ([27579e2](https://www.github.com/al3j4ndr1x/landing-su/commit/27579e254b326145e2f9fd567a63d4daa35f4195))
+
 ### [0.3.3](https://www.github.com/al3j4ndr1x/landing-su/compare/v0.3.2...v0.3.3) (2021-05-17)
 
 
