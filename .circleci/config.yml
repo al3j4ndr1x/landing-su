@@ -66,7 +66,7 @@ jobs: # a collection of steps
             - v8-node-dependencies-{{ .Branch }}
             - v8-node-dependencies-
       # set NPM to cache its dependencies on RAM disk
-      - run: npm config --global set cache /mnt/ramdisk/.npm
+      #- run: npm config --global set cache /mnt/ramdisk/.npm
       - run:
           name: Print cached NPM modules size
           command: du -d 0 -h ~/.npm || true
