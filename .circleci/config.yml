@@ -12,6 +12,10 @@ executors:
 
     working_directory: /mnt/ramdisk
 
+    environment:
+      # set Cypress to cache its binary on RAM disk
+      CYPRESS_CACHE_FOLDER: /mnt/ramdisk/.cache/Cypress
+
 jobs: # a collection of steps
   prepare:
     executor: default
@@ -50,6 +54,7 @@ jobs: # a collection of steps
       - run:
           name: Running git garbage collection
           command: git gc
+
       - save_cache:
           key: source-v1-{{ .Branch }}-{{ .Revision }}
           paths:
@@ -60,6 +65,8 @@ jobs: # a collection of steps
             - v8-node-dependencies-{{ .Branch }}-{{ checksum "package-lock.json" }}
             - v8-node-dependencies-{{ .Branch }}
             - v8-node-dependencies-
+      # set NPM to cache its dependencies on RAM disk
+      - run: npm config --global set cache /mnt/ramdisk/.npm
       - run:
           name: Print cached NPM modules size
           command: du -d 0 -h ~/.npm || true
@@ -79,16 +86,24 @@ jobs: # a collection of steps
       - save_cache: # special step to save the dependency cache
           # cache NPM modules and the folder with the Cypress binary
           paths:
-            - node_modules
+            #- node_modules
             #- functions/node_modules
-            - ~/.npm
+            #- ~/.npm
             #- ~/.cache
+            - /mnt/ramdisk/.npm
+            - /mnt/ramdisk/.cache
           key: v8-node-dependencies-{{ .Branch }}-{{ checksum "package-lock.json" }}
-
+      # when passing files to run the app and the tests
+      # we do NOT need the NPM cache since everything has been installed already
+      - run: rm -rf .npm
       - persist_to_workspace:
-          root: /home/circleci
+          root: /mnt
           paths:
-            - .
+            - ramdisk
+      # - persist_to_workspace:
+      #     root: /home/circleci
+      #     paths:
+      #       - .
       - run:
           name: Finally the working directory after build steps
           command: |
@@ -99,7 +114,8 @@ jobs: # a collection of steps
     parallelism: 1
     steps:
       - attach_workspace:
-          at: /home/circleci
+          at: /mnt
+          #at: /home/circleci
 
       # - run:
       #     name: Split tests glob pattern
@@ -125,7 +141,7 @@ jobs: # a collection of steps
     parallelism: 1
     steps:
       - attach_workspace:
-          at: /home/circleci
+          at: /mnt
       - run:
           name: Running End-to-End Tests and recording with Cypress 🧪
           command: npm run e2e:ci
@@ -153,7 +169,7 @@ jobs: # a collection of steps
     parallelism: 3
     steps:
       - attach_workspace:
-          at: /home/circleci
+          at: /mnt
       # runs Cypress test in load balancing (parallel) mode
       # and groups them in Cypress Dashboard under name "electron-3x"
       - run:
@@ -188,7 +204,7 @@ jobs: # a collection of steps
     executor: default
     steps:
       - attach_workspace:
-          at: /home/circleci
+          at: /mnt
       - run:
           name: Show current branch
           command: echo ${CIRCLE_BRANCH}
@@ -207,7 +223,7 @@ jobs: # a collection of steps
     executor: default
     steps:
       - attach_workspace:
-          at: /home/circleci
+          at: /mnt
 
       - run:
           name: Show current branch
