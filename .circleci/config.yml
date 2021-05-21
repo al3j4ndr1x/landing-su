@@ -1,14 +1,15 @@
 # Use the latest 2.1 version of CircleCI pipeline processing engine
-version: 2.1 # use CircleCI 2.1
-
+version: 2.1
 executors:
   default:
-    working_directory: ~/repo
     docker: # run the steps with Docker
-      - image: circleci/node:15-browsers
+      - image: cimg/node:16.1-browsers
         environment:
-          ## this enables colors in the output
+          # this enables colors in the output
           TERM: xterm
+
+    working_directory: ~/repo
+
 jobs: # a collection of steps
   prepare:
     executor: default
@@ -18,6 +19,7 @@ jobs: # a collection of steps
           command: |
             node -v
             npm -v
+
       # - run:
       #     name: Updating npm at latest
       #     command: |
@@ -29,9 +31,9 @@ jobs: # a collection of steps
     steps:
       - restore_cache:
           keys:
-            - source-v1-{{ .Branch }}-{{ .Revision }}
-            - source-v1-{{ .Branch }}-
-            - source-v1-
+            - source-v3-{{ .Branch }}-{{ .Revision }}
+            - source-v3-{{ .Branch }}-
+            - source-v3-
 
       - checkout # special step to check out source code to working directory
 
@@ -46,20 +48,30 @@ jobs: # a collection of steps
       - run:
           name: Running git garbage collection
           command: git gc
+
       - save_cache:
-          key: source-v1-{{ .Branch }}-{{ .Revision }}
+          key: source-v3-{{ .Branch }}-{{ .Revision }}
           paths:
             - ".git"
 
       - restore_cache: # special step to restore the dependency cache
           keys:
-            - v6.1-node-dependencies-{{ .Branch }}-{{ checksum "package-lock.json" }}
-            - v6.1-node-dependencies-{{ .Branch }}
-            - v6.1-node-dependencies-
+            - v9-node-dependencies-{{ .Branch }}-{{ checksum "package-lock.json" }}
+            - v9-node-dependencies-{{ .Branch }}
+            - v9-node-dependencies-
+
+      - run:
+          name: Print cached NPM modules size
+          command: du -d 0 -h ~/.npm || true
       - run:
           name: Installing Dependencies 📦
           command: npm ci
-
+      # - run:
+      #     name: Print NPM cache directory
+      #     command: npm config get cache
+      - run:
+          name: Print NPM modules after install
+          command: du -d 0 -h ~/.npm || true
       - run:
           name: Verifying Cypress 🌲
           command: npm run cy:verify
@@ -69,14 +81,21 @@ jobs: # a collection of steps
           paths:
             - node_modules
             #- functions/node_modules
-            #- ~/.npm
-            #- ~/.cache
-          key: v6.1-node-dependencies-{{ .Branch }}-{{ checksum "package-lock.json" }}
+            - ~/.npm
+            - ~/.cache
+          key: v9-node-dependencies-{{ .Branch }}-{{ checksum "package-lock.json" }}
+      # when passing files to run the app and the tests
+      # we do NOT need the NPM cache since everything has been installed already
+      - run: rm -rf .npm
 
       - persist_to_workspace:
           root: /home/circleci
           paths:
             - .
+      # - persist_to_workspace:
+      #     root: /home/circleci
+      #     paths:
+      #       - .
       - run:
           name: Finally the working directory after build steps
           command: |
@@ -88,11 +107,6 @@ jobs: # a collection of steps
     steps:
       - attach_workspace:
           at: /home/circleci
-      # start server before starting tests
-      #- run:
-      #    name: Starting server before starting tests
-      #    command: npm start # & wait-on http://localhost:4200
-      #    background: true
 
       # - run:
       #     name: Split tests glob pattern
@@ -102,18 +116,16 @@ jobs: # a collection of steps
       - run:
           name: Running Unit Tests with Jest and collecting coverage reports for Coveralls 🧪
           command: npm run test:cov
-
       - store_test_results:
           path: ./coverage
       - store_artifacts:
           path: ./coverage
           destination: coverage
-
       - run:
           name: Finally the working directory after unit tests steps
           command: |
             ls -al
-            echo 'The working directory after unit tests'
+            echo 'The working directory after Jest Unit Tests'
 
   test_e2e:
     executor: default
@@ -184,14 +196,12 @@ jobs: # a collection of steps
     steps:
       - attach_workspace:
           at: /home/circleci
-
       - run:
           name: Show current branch
           command: echo ${CIRCLE_BRANCH}
       - run:
           name: Building branch to staging
           command: npm run build:staging
-
       - run:
           name: Deploying branch to Firebase staging hosting 🎉
           command: |
@@ -307,7 +317,7 @@ workflows:
             - build
           filters:
             <<: *filters-production
-      - hold: # A job that will require manual approval in the CircleCI web application.
+      - hold_approval: # A job that will require manual approval in the CircleCI web application.
           type: approval # This key-value pair will set my workflow to a status of "On Hold"
           requires: # We only run the "hold" job when test has succeeded
             - test
@@ -317,6 +327,6 @@ workflows:
       # In this case, a user is manually triggering the deploy job.
       - deploy_production:
           requires:
-            - hold
+            - hold_approval
           filters:
             <<: *filters-production # this is calling the previously set yaml anchor
