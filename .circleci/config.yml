@@ -1,8 +1,5 @@
 # Use the latest 2.1 version of CircleCI pipeline processing engine
 version: 2.1
-orbs:
-  git-shallow-clone: guitarrapc/git-shallow-clone@2.0.3
-
 executors:
   default:
     docker: # run the steps with Docker
@@ -38,10 +35,7 @@ jobs: # a collection of steps
             - source-v3-{{ .Branch }}-
             - source-v3-
 
-      #- checkout # special step to check out source code to working directory
-      # set fetch_depth: 1 to minimize fetch time
-      - git-shallow-clone/checkout:
-          fetch_depth: 1
+      - checkout # special step to check out source code to working directory
 
       - run:
           name: Source Code has arrived ✨
