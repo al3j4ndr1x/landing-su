@@ -1,20 +1,17 @@
 # Use the latest 2.1 version of CircleCI pipeline processing engine
-version: 2.1 # use CircleCI 2.1
+version: 2.1
+orbs:
+  git-shallow-clone: guitarrapc/git-shallow-clone@2.0.3
 
 executors:
   default:
-    #working_directory: ~/repo
     docker: # run the steps with Docker
       - image: cimg/node:16.1-browsers
         environment:
           # this enables colors in the output
           TERM: xterm
 
-    working_directory: /mnt/ramdisk
-
-    environment:
-      # set Cypress to cache its binary on RAM disk
-      CYPRESS_CACHE_FOLDER: /mnt/ramdisk/.cache/Cypress
+    working_directory: ~/repo
 
 jobs: # a collection of steps
   prepare:
@@ -37,11 +34,14 @@ jobs: # a collection of steps
     steps:
       - restore_cache:
           keys:
-            - source-v2-{{ .Branch }}-{{ .Revision }}
-            - source-v2-{{ .Branch }}-
-            - source-v2-
+            - source-v3-{{ .Branch }}-{{ .Revision }}
+            - source-v3-{{ .Branch }}-
+            - source-v3-
 
-      - checkout # special step to check out source code to working directory
+      #- checkout # special step to check out source code to working directory
+      # set fetch_depth: 1 to minimize fetch time
+      - git-shallow-clone/checkout:
+          fetch_depth: 1
 
       - run:
           name: Source Code has arrived ✨
@@ -56,26 +56,25 @@ jobs: # a collection of steps
           command: git gc
 
       - save_cache:
-          key: source-v1-{{ .Branch }}-{{ .Revision }}
+          key: source-v3-{{ .Branch }}-{{ .Revision }}
           paths:
             - ".git"
 
       - restore_cache: # special step to restore the dependency cache
           keys:
-            - v8-node-dependencies-{{ .Branch }}-{{ checksum "package-lock.json" }}
-            - v8-node-dependencies-{{ .Branch }}
-            - v8-node-dependencies-
-      # set NPM to cache its dependencies on RAM disk
-      #- run: npm config --global set cache /mnt/ramdisk/.npm
+            - v9-node-dependencies-{{ .Branch }}-{{ checksum "package-lock.json" }}
+            - v9-node-dependencies-{{ .Branch }}
+            - v9-node-dependencies-
+
       - run:
           name: Print cached NPM modules size
           command: du -d 0 -h ~/.npm || true
       - run:
           name: Installing Dependencies 📦
           command: npm ci
-      - run:
-          name: Print NPM cache directory
-          command: npm config get cache
+      # - run:
+      #     name: Print NPM cache directory
+      #     command: npm config get cache
       - run:
           name: Print NPM modules after install
           command: du -d 0 -h ~/.npm || true
@@ -86,20 +85,19 @@ jobs: # a collection of steps
       - save_cache: # special step to save the dependency cache
           # cache NPM modules and the folder with the Cypress binary
           paths:
-            #- node_modules
+            - node_modules
             #- functions/node_modules
-            #- ~/.npm
-            #- ~/.cache
-            - /mnt/ramdisk/.npm
-            - /mnt/ramdisk/.cache
-          key: v8-node-dependencies-{{ .Branch }}-{{ checksum "package-lock.json" }}
+            - ~/.npm
+            - ~/.cache
+          key: v9-node-dependencies-{{ .Branch }}-{{ checksum "package-lock.json" }}
       # when passing files to run the app and the tests
       # we do NOT need the NPM cache since everything has been installed already
       - run: rm -rf .npm
+
       - persist_to_workspace:
-          root: /mnt
+          root: /home/circleci
           paths:
-            - ramdisk
+            - .
       # - persist_to_workspace:
       #     root: /home/circleci
       #     paths:
@@ -114,8 +112,7 @@ jobs: # a collection of steps
     parallelism: 1
     steps:
       - attach_workspace:
-          at: /mnt
-          #at: /home/circleci
+          at: /home/circleci
 
       # - run:
       #     name: Split tests glob pattern
@@ -141,7 +138,7 @@ jobs: # a collection of steps
     parallelism: 1
     steps:
       - attach_workspace:
-          at: /mnt
+          at: /home/circleci
       - run:
           name: Running End-to-End Tests and recording with Cypress 🧪
           command: npm run e2e:ci
@@ -169,7 +166,7 @@ jobs: # a collection of steps
     parallelism: 3
     steps:
       - attach_workspace:
-          at: /mnt
+          at: /home/circleci
       # runs Cypress test in load balancing (parallel) mode
       # and groups them in Cypress Dashboard under name "electron-3x"
       - run:
@@ -204,7 +201,7 @@ jobs: # a collection of steps
     executor: default
     steps:
       - attach_workspace:
-          at: /mnt
+          at: /home/circleci
       - run:
           name: Show current branch
           command: echo ${CIRCLE_BRANCH}
@@ -223,7 +220,7 @@ jobs: # a collection of steps
     executor: default
     steps:
       - attach_workspace:
-          at: /mnt
+          at: /home/circleci
 
       - run:
           name: Show current branch
@@ -326,7 +323,7 @@ workflows:
             - build
           filters:
             <<: *filters-production
-      - hold: # A job that will require manual approval in the CircleCI web application.
+      - hold_approval: # A job that will require manual approval in the CircleCI web application.
           type: approval # This key-value pair will set my workflow to a status of "On Hold"
           requires: # We only run the "hold" job when test has succeeded
             - test
@@ -336,6 +333,6 @@ workflows:
       # In this case, a user is manually triggering the deploy job.
       - deploy_production:
           requires:
-            - hold
+            - hold_approval
           filters:
             <<: *filters-production # this is calling the previously set yaml anchor
