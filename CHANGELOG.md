@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.3.5](https://www.github.com/al3j4ndr1x/landing-su/compare/v0.3.4...v0.3.5) (2021-05-21)
+
+
+### Miscellaneous
+
+* update ci config.yml ([#59](https://www.github.com/al3j4ndr1x/landing-su/issues/59)) ([1a352f6](https://www.github.com/al3j4ndr1x/landing-su/commit/1a352f61723df54749dd5ea4a3b234b826790b17))
+
 ### [0.3.4](https://www.github.com/al3j4ndr1x/landing-su/compare/v0.3.3...v0.3.4) (2021-05-19)
 
 
