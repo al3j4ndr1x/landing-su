@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.3.6](https://www.github.com/al3j4ndr1x/landing-su/compare/v0.3.5...v0.3.6) (2021-05-27)
+
+
+### Miscellaneous
+
+* create codeql-analysis.yml ([36a650c](https://www.github.com/al3j4ndr1x/landing-su/commit/36a650ce183a1ee3cb82d8b5e2aa6f43185faf35))
+
 ### [0.3.5](https://www.github.com/al3j4ndr1x/landing-su/compare/v0.3.4...v0.3.5) (2021-05-21)
 
 
