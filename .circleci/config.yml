@@ -270,6 +270,8 @@ workflows:
                 - /hotfix-.*/
                 - /chore-.*/
                 - /perf-.*/
+                - /patch-.*/
+                - /dependabot/.*/
                 - /experiment-.*/
             tags:
               ignore: /.*/
